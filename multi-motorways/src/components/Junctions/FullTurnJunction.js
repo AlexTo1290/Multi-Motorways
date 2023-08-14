@@ -1,6 +1,6 @@
 import Junction from "Junction"
 
-function FullTurnJunction({position}) { 
+function FullTurnJunction({position}) {
     return(<Junction name="full-turn-junction" position={position} />)
 }
 

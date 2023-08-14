@@ -28,7 +28,7 @@ function Car({name, position, children}) {
 
     // adding new car to carAtoms on first render
     useEffect(() => {
-        setCarAtoms(cars.push({position: {position}, name: {name}}))
+        setCarAtoms(cars.push({name: {name}, position: {position}, rotation: 0}))
     }, []);
 
     return (<GameObject name={name} position={position} type="car" interactable={false} isVisible={true}>
