@@ -1,3 +1,4 @@
+import { useFrame } from "@react-three/fiber";
 
 function Collider() {
     
