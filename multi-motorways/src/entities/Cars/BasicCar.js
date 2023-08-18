@@ -1,4 +1,4 @@
-import Car from "./Car"
+import Car from "../../components/Car"
 
 function BasicCar({position}) {
     return (<Car name="basic-car" position={position}>
