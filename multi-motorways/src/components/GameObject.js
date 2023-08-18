@@ -9,7 +9,7 @@ import { useRef } from "react";
  * @type holds a string stating whether the object is an "Road, Junction, etc"
  */
 
-function GameObject({name, position, children, isVisible, type, iteractable, ...props}) {
+function GameObject({name, position, children, isVisible, type, ...props}) {
     const ref = useRef();
 
     if (isVisible) {

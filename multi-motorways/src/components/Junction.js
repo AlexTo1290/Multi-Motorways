@@ -1,6 +1,6 @@
-import GameObject from "../GameObject"
+import GameObject from "./GameObject"
 import { useEffect } from "react"
-import { junctionAtoms } from "../../recoil/atom/junctionAtoms"
+import { junctionAtoms } from "../recoil/atom/junctionAtoms"
 import { useRecoilState } from "recoil"
 
 function Junction({name, position, children}) {
@@ -11,7 +11,7 @@ function Junction({name, position, children}) {
         setJunctionAtoms(junctions.push({position: {position}, name: {name}}))
     }, []);
 
-    return (<GameObject name={name} position={position} type="junction" interactable={false} isVisible={true}>
+    return (<GameObject name={name} position={position} type="junction" isVisible={true}>
         { children }
     </GameObject>);
 }
