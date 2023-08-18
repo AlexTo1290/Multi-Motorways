@@ -11,8 +11,12 @@ const GroundMesh = () => {
 
 const RoadTile = (x,y) => {
   return <mesh scale={0.2} rotation-z={1}> 
-      <planeGeometry args={[20,1,1]}/>
+      <planeGeometry args={[20,1.2,1]}/>
       <meshToonMaterial color="darkgray" />
+      <mesh scale={1}> 
+        <planeGeometry args={[20,0.15,1]}/>
+        <meshToonMaterial color="white" />
+      </mesh>
     </mesh>
 }
 
