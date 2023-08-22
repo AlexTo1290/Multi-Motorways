@@ -1,24 +1,8 @@
 import { Canvas } from "@react-three/fiber";
+import RoadTile from "./scene/roadTiles.js";
+import GroundMesh from './scene/groundMesh.js';
 
 import "./styles/styles.css";
-
-const GroundMesh = () => {
-  return <mesh position={[0, 0, -0.5]} scale={100}>
-    <planeGeometry />
-    <meshToonMaterial color="lightgreen" />
-  </mesh>
-}
-
-const RoadTile = (x,y) => {
-  return <mesh scale={0.2} rotation-z={1}> 
-      <planeGeometry args={[20,1.2,1]}/>
-      <meshToonMaterial color="darkgray" />
-      <mesh scale={1}> 
-        <planeGeometry args={[20,0.15,1]}/>
-        <meshToonMaterial color="white" />
-      </mesh>
-    </mesh>
-}
 
 function App() {
   return (
@@ -29,7 +13,7 @@ function App() {
           <pointLight position={[-10, -10, -10]} />
           
           <GroundMesh />
-          <RoadTile x={0} y={0}></RoadTile>
+          <RoadTile c1={[-50,-50]} c2={[50,50]}></RoadTile>
       </Canvas>
     </div>
   );
