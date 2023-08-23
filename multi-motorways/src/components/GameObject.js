@@ -1,4 +1,10 @@
-import { useRef } from "react";
+import { getUniqueId } from "../recoil/atom/idValues";
+import { gameObjectRegistry, registerGameObject } from "../recoil/atom/gameObjectRegistry";
+import { useRecoilState } from "recoil";
+import { useEffect, createContext, useRef } from "react";
+
+
+export const GameObjectContext = createContext(null);
 
 /**
  * Creates an object in the game. Examples would be towers, background tiles, enemies, etc.
@@ -8,12 +14,17 @@ import { useRef } from "react";
  * @isVisible holds a boolean to whether the object is visible on the canvas
  * @type holds a string stating whether the object is an "Road, Junction, etc"
  */
+function GameObject({name, position, direction, children, isVisible, type, ...props}) {
+    const context = useRef({});
 
-function GameObject({name, position, children, isVisible, type, ...props}) {
-    const ref = useRef();
+    // Registering the game object to the game objects registry (on the first render)
+    useEffect(() => {
+        context.current[id] = registerGameObject({ name: name, type: type, position: position, isVisible: isVisible, collisions: [] })
+    }, [])
+    
 
     if (isVisible) {
-        return children;
+        return (<GameObjectContext.Provider value={context.current}> {children} </GameObjectContext.Provider>);
     }
 }
 

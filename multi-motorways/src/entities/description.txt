@@ -1,0 +1,8 @@
+All entities are defined in the format:
+
+<GameObject>
+    <Sprite />
+    <Collider />
+    <Interactable />
+    <Script />
+</Gameobject>
