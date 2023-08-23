@@ -7,7 +7,7 @@ export const gameObjectRegistry = atomFamily({
     key: "gameObjectRegistry",
     default: null
 })
-2
+
 // Holds the states of the game objects in the game sorted by type (and then id) e.g. {"cars": { id1: props, ... }, ...}
 export const gameObjectRegistryByType = atomFamily({
   key: "gameObjectRegistryByType",
@@ -17,7 +17,7 @@ export const gameObjectRegistryByType = atomFamily({
 
 /**
  * Registers an object to hte game objects registry
- * @param {*} gameObjectProps holds the properties of the game object 
+ * @param {*} gameObjectProps holds the properties of the game object
  * @return the id the game object is registered as
  */
 export const registerGameObject = ({ name, type, position, direction, isVisible, collisions }) => {   
