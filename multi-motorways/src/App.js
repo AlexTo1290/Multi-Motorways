@@ -1,14 +1,12 @@
-import { Canvas } from "@react-three/fiber";
+import SceneCanvas from "./scene/sceneCanvas";
+
+import "./styles/styles.css";
 
 function App() {
   return (
-    <Canvas orthographic>
-      <ambientLight intensity={1} />
-      <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
-      <pointLight position={[-10, -10, -10]} />
-      
-      
-    </Canvas>
+    <div className="Fill">
+      <SceneCanvas/>
+    </div>
   );
 }
 
