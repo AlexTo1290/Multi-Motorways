@@ -20,7 +20,7 @@ export const gameObjectRegistryByType = atomFamily({
  * @param {*} gameObjectProps holds the properties of the game object
  * @return the id the game object is registered as
  */
-export const registerGameObject = ({ name, type, position, direction, isVisible, collisions }) => {   
+export const useRegisterGameObject = ({ name, type, position, direction, isVisible, collisions }) => {   
   // getting a unique id for the game object
   const id = getUniqueId();
 
@@ -47,7 +47,7 @@ export const registerGameObject = ({ name, type, position, direction, isVisible,
  * @param {*} gameObjectProps the id and type of the game object being unregistered
  * @returns 
  */
-export const unregisterGameObject = ({ type, id, }) => {
+export const useUnregisterGameObject = ({ type, id, }) => {
   const setGameObjects = useSetRecoilState(gameObjectRegistry(id));
   const [gameObjectsByType, setGameObjectsByType] = useRecoilState(gameObjectRegistryByType(type));
 

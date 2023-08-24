@@ -1,10 +1,10 @@
 import { getUniqueId } from "../recoil/atom/idValues";
-import { gameObjectRegistry, registerGameObject } from "../recoil/atom/gameObjectRegistry";
+import { gameObjectRegistry, useRegisterGameObject } from "../recoil/atom/gameObjectRegistry";
 import { useRecoilState } from "recoil";
 import { useEffect, createContext, useRef } from "react";
 
 
-export const GameObjectContext = createContext(null);
+export const GameObjectContext = createContext({});
 
 /**
  * Creates an object in the game. Examples would be towers, background tiles, enemies, etc.
@@ -19,7 +19,7 @@ function GameObject({name, position, direction, children, isVisible, type, ...pr
 
     // Registering the game object to the game objects registry (on the first render)
     useEffect(() => {
-        context.current[id] = registerGameObject({ name: name, type: type, position: position, isVisible: isVisible, collisions: [] })
+        context.current[id] = useRegisterGameObject({ name: name, type: type, position: position, isVisible: isVisible, collisions: [] })
     }, [])
     
 

@@ -11,8 +11,7 @@ function BasicCar({position}) {
 
     return (
         <Car name="basic-car" position={position}>
-            <BasicCarSprite />
-            
+            <BasicCarSprite s/>
         </Car>
     );
 }

@@ -6,6 +6,7 @@ import CameraController from "./CameraController";
 
 import { useRecoilValue } from "recoil";
 import { cameraPosition } from "../recoil/atom/cameraAtoms";
+import BasicCar from "../entities/Cars/BasicCar";
 // import { useFrame } from "@react-three/fiber";
 
 const SceneCanvas = () => {
@@ -22,6 +23,8 @@ const SceneCanvas = () => {
             <CameraController />
             <GroundMesh />
             <RoadTile c1={[-50, -50]} c2={[50, 50]}></RoadTile>
+
+            <BasicCar position={[1, 1, 2]} />
         </Canvas>
     );
 }
