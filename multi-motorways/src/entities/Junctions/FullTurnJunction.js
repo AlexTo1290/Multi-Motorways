@@ -1,7 +1,7 @@
 import Junction from "../../components/Junction"
 
-function FullTurnJunction({position}) {
-    return(<Junction name="full-turn-junction" position={position} />)
+function RightAngleJunction({position}) {
+    return(<Junction name="right-angle-junction" position={position} />)
 }
 
-export default FullTurnJunction;
+export default RightAngleJunction;
