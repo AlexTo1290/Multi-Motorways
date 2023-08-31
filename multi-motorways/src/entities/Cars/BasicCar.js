@@ -1,4 +1,3 @@
-import Car from "../../components/Car"
 import BasicCarSprite from "../../sprites/BasicCarSprite";
 import GameObject from "../../components/GameObject";
 import Collider from "../../components/Collider";
