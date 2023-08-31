@@ -1,6 +1,7 @@
 import { selectorFamily } from "recoil";
 import { gameObjectRegistry } from "../atom/gameObjectRegistry";
 
+// ===================================== CODE NOT IN USE =========================================
 export const getCollisions = selectorFamily({
     key: "getCollisions",
     get: ({position, types}) => ({get}) => {

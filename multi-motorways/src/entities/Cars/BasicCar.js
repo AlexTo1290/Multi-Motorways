@@ -1,5 +1,10 @@
 import Car from "../../components/Car"
 import BasicCarSprite from "../../sprites/BasicCarSprite";
+import GameObject from "../../components/GameObject";
+import Collider from "../../components/Collider";
+import BasicCarScript from "../../scripts/BasicCarScript";
+
+
 
 function BasicCar({position}) {
     /* 
@@ -10,9 +15,12 @@ function BasicCar({position}) {
     */
 
     return (
-        <Car name="basic-car" position={position}>
-            <BasicCarSprite s/>
-        </Car>
+        <GameObject name={"basic-car"} position={position} type="car" isVisible={true}>
+            <BasicCarSprite />
+            <Collider />
+            {/* <Interactable /> */} 
+            <BasicCarScript />
+        </GameObject>
     );
 }
 

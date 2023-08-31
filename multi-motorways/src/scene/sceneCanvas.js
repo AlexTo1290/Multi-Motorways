@@ -12,8 +12,6 @@ import BasicCar from "../entities/Cars/BasicCar";
 const SceneCanvas = () => {
     const cameraPos = useRecoilValue(cameraPosition);
 
-
-
     return (
         <Canvas camera={{ position: cameraPos, fov: 20 }}>
             <ambientLight intensity={1} />
@@ -24,7 +22,9 @@ const SceneCanvas = () => {
             <GroundMesh />
             <RoadTile c1={[-50, -50]} c2={[50, 50]}></RoadTile>
 
-            <BasicCar position={[1, 1, 2]} />
+            <BasicCar position={[2, 1, 2]} />
+            {/* <BasicCar position={[1.1, 2, 2]} /> */}
+
         </Canvas>
     );
 }

@@ -2,11 +2,13 @@ import { useGameObject } from "../components/useGameObject";
 
 function BasicCarSprite() {
     const state = useGameObject();
-    const position = state.position;
+
+    const position = state?.position;
+    console.log("sprite: " + position);
     
     return (
-        <mesh position={position}>
-            <planeGeometry args={[10, 10]}/>
+        <mesh position={state?.position}>
+            <planeGeometry args={[1, 1]}/>
             <meshStandardMaterial color="red" />
         </mesh>
     )
