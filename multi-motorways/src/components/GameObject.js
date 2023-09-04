@@ -14,7 +14,7 @@ export const GameObjectContext = createContext({});
  * @isVisible holds a boolean to whether the object is visible on the canvas
  * @type holds a string stating whether the object is an "Road, Junction, etc"
  */
-function GameObject({ name, position, direction, children, isVisible, type, collisions }) {
+function GameObject({ name, position, rotation, children, isVisible, type, collisions }) {
     const [context, setContext] = useState({});
 
     // FUNCTIONS FOR REGISTERING AN UNREGISTERING GAME OBJECTS
@@ -36,24 +36,16 @@ function GameObject({ name, position, direction, children, isVisible, type, coll
         const id = getUniqueId();
 
         // creating new game object in registries
-        const newGameObject = { id: id, type: type, name: name, position: position, direction: direction, isVisible: isVisible, collisions: collisions };
+        const newGameObject = { id: id, type: type, name: name, position: position, rotation: rotation, isVisible: isVisible, collisions: collisions };
         
         // registering the new game object into the game object registries
-        set(gameObjectRegistry(id), newGameObject);
+        set(gameObjectRegistry(id), newGameObject);     // registering to gameObjectsRegistry
 
-        let newGameObjects = snapshot.getLoadable(gameObjectRegistryByType(type)).contents;
-        console.log(newGameObjects);
+        let newGameObjects = [... snapshot.getLoadable(gameObjectRegistryByType(type)).contents];    // registering to gameObjetRegistryByType
+        console.log(newGameObject);
+        newGameObjects.push(id);
 
-        // checking if current dict for type is empty
-        if (Object.keys(newGameObjects).length === 0) {
-            set(gameObjectRegistryByType(type), {id: newGameObject});
-            console.log("Game object added to registry")
-        } else {
-            newGameObjects[id] = newGameObject;
-            set(gameObjectRegistryByType(type), newGameObjects);
-            console.log("Game object added to registry")
-        }
-
+        set(gameObjectRegistryByType(type), newGameObjects);
         
         return id;  // returning the id the game object has been registered as
     }, []);
@@ -83,7 +75,7 @@ function GameObject({ name, position, direction, children, isVisible, type, coll
     
 
     if (isVisible) {
-        return (<GameObjectContext.Provider value={context}> {children} </GameObjectContext.Provider>);
+        return (<GameObjectContext.Provider value={context}>{children}</GameObjectContext.Provider>);
     }
 }
 

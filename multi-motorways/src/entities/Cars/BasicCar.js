@@ -14,9 +14,9 @@ function BasicCar({position}) {
     */
 
     return (
-        <GameObject name={"basic-car"} position={position} type="car" isVisible={true}>
+        <GameObject name={"basic-car"} rotation={Math.PI / 4} position={position} type="car" isVisible={true}>
             <BasicCarSprite />
-            <Collider />
+            <Collider types={["car"]}/>
             {/* <Interactable /> */} 
             <BasicCarScript />
         </GameObject>
