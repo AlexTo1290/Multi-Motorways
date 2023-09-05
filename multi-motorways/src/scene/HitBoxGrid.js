@@ -20,7 +20,7 @@ const HitBoxGrid = () => {
         // generate mesh cells in a grid pattern
         while((currentBoxY*CELL_HEIGHT)<GRID_HEIGHT){
             while((currentBoxX*CELL_WIDTH)<GRID_WIDTH){
-                generatePosArr.push([translateGridX+currentBoxX*CELL_WIDTH, translateGridY+currentBoxY*CELL_HEIGHT, 1])
+                generatePosArr.push([translateGridX+(currentBoxX*CELL_WIDTH), translateGridY+currentBoxY*CELL_HEIGHT, 1])
                 currentBoxX+=1;
             }
             currentBoxY +=1;
@@ -32,7 +32,7 @@ const HitBoxGrid = () => {
 
     return(
         cellsPositions.map((i_pos) =>
-            <mesh position={i_pos} scale={0.9}>
+            <mesh position={i_pos} scale={0.9} onClick={(e)=>alert("clicked x:" + (i_pos[0]-translateGridX)/CELL_WIDTH + " y:" +(i_pos[1]-translateGridY)/CELL_HEIGHT)}>
                 <planeGeometry />
                 <meshPhongMaterial color="#ff0000" opacity={0.1} transparent />
             </mesh>
