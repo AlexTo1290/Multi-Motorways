@@ -2,9 +2,13 @@ import { selectorFamily } from "recoil";
 import { gameObjectRegistry, gameObjectRegistryByType } from "../atom/gameObjectRegistry";
 
 // ===================================== CODE NOT IN USE =========================================
-export const getCollisions = selectorFamily({
-    key: "getCollisions",
-    get: ({position, types}) => ({get}) => {
+export const gameObjectsByTypesSelector = selectorFamily({
+    key: "gameObjectsByTypesSelector",
+    get: ({ types, excludes=[], dependencies }) => ({get}) => {
+        if ( types === undefined || types === [] || types === null ) {
+            return;
+        }
+
         // Getting the game objects of the given types
         let gameObjects = [];
         let gameObjectIds = [];
@@ -16,24 +20,16 @@ export const getCollisions = selectorFamily({
             gameObjectIds.push(...currentGameObjects);
         }
 
+        // removing any "exclude" ids
+        for (let i = 0; i < excludes.length; i++) {
+            gameObjectIds.splice(gameObjectIds.indexOf(excludes[i]), 1);
+        }
+        
         // getting the game object corresponding to the ids
         for (let i = 0; i < gameObjectIds.length; i++) {
             gameObjects.push(get(gameObjectRegistry(gameObjectIds[i])));
         }
 
-        
-    //     // ========= WORK IN PROGRESS =========
-    //     // Looking for collisions with any of these game objects (by exact locations which isn't ideal)
-    //     let colliders = [];
-
-    //     for (let i = 0; i < gameObjects.length; i++) {
-    //         let posOfObj = gameObjects[i].position;
-
-    //         if (posOfObj[0] == position[0] && posOfObj[1] == position[1]) {
-    //             colliders.push(gameObjects[i]);
-    //         }
-    //     }
-
-    //     return colliders;
+        return gameObjects;
     }
 })
