@@ -15,7 +15,7 @@ const SceneCanvas = () => {
     const cameraPos = useRecoilValue(cameraPosition);
 
     return (
-        <Canvas camera={{ position: cameraPos, fov: 110 }}>
+        <Canvas camera={{ position: cameraPos, fov: 40 }}>
             <ambientLight intensity={1} />
             <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
             <pointLight position={[-10, -10, -10]} />

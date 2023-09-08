@@ -15,7 +15,17 @@ const HitBoxGrid = () => {
     const [cellsPositions, setCellPositions] = useState([])
 
     function registerBuildClick(x,y){
-        setRoadTilesArr([...roadTilesArr, [x,y]])
+        var index = roadTilesArr.indexOf([x,y]);
+        // having problems with this
+        if (index !== -1) {
+            roadTilesArr.splice(index, 1);
+            alert("removed")
+            setRoadTilesArr(roadTilesArr)
+        }
+        else
+        {
+            setRoadTilesArr([...roadTilesArr, [x,y]])
+        }
     }
 
     useEffect(()=>{
