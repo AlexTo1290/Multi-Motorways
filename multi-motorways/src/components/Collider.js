@@ -21,7 +21,7 @@ function checkForCollision(state1, state2) {
     let pos1 = state1.position;
     let pos2 = state2.position;
 
-    if (pos1[0] == pos2[0] && pos1[1] == pos2[1]) return true;
+    if (pos1[0] === pos2[0] && pos1[1] === pos2[1]) return true;
     else return false;
 }
 

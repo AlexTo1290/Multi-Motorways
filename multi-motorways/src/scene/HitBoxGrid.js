@@ -1,15 +1,22 @@
 import { useEffect, useState } from "react"
+import { useRecoilState } from "recoil";
+import { roadTiles } from "../recoil/atom/roadAtoms";
 
 const HitBoxGrid = () => {
-    const translateGridX=-25
-    const translateGridY=-25
-
-    const GRID_WIDTH = 50
-    const GRID_HEIGHT = 50
+    const translateGridX=-24.5
+    const translateGridY=-24.5
     const CELL_HEIGHT = 1
     const CELL_WIDTH = 1
 
+    const GRID_WIDTH = 50
+    const GRID_HEIGHT = 50
+
+    const [roadTilesArr, setRoadTilesArr] = useRecoilState(roadTiles)
     const [cellsPositions, setCellPositions] = useState([])
+
+    function registerBuildClick(x,y){
+        setRoadTilesArr([...roadTilesArr, [x,y]])
+    }
 
     useEffect(()=>{
         var currentBoxX = 0
@@ -32,7 +39,7 @@ const HitBoxGrid = () => {
 
     return(
         cellsPositions.map((i_pos) =>
-            <mesh position={i_pos} scale={0.9} onClick={(e)=>alert("clicked x:" + (i_pos[0]-translateGridX)/CELL_WIDTH + " y:" +(i_pos[1]-translateGridY)/CELL_HEIGHT)}>
+            <mesh position={i_pos} scale={0.9} onClick={(e)=>registerBuildClick((i_pos[0]-translateGridX)/CELL_WIDTH, (i_pos[1]-translateGridY)/CELL_HEIGHT)}>
                 <planeGeometry />
                 <meshPhongMaterial color="#ff0000" opacity={0.1} transparent />
             </mesh>

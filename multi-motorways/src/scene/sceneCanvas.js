@@ -8,13 +8,14 @@ import HitBoxGrid from "./HitBoxGrid";
 import { useRecoilValue } from "recoil";
 import { cameraPosition } from "../recoil/atom/cameraAtoms";
 import BasicCar from "../entities/Cars/BasicCar";
+import RoadPlacement from "./roadPlacement";
 // import { useFrame } from "@react-three/fiber";
 
 const SceneCanvas = () => {
     const cameraPos = useRecoilValue(cameraPosition);
 
     return (
-        <Canvas camera={{ position: cameraPos, fov: 100 }}>
+        <Canvas camera={{ position: cameraPos, fov: 110 }}>
             <ambientLight intensity={1} />
             <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
             <pointLight position={[-10, -10, -10]} />
@@ -23,6 +24,7 @@ const SceneCanvas = () => {
             <GroundMesh />
             <RoadTile c1={[-50, -50]} c2={[50, 50]}></RoadTile>
             <HitBoxGrid></HitBoxGrid>
+            <RoadPlacement></RoadPlacement>
 
             <BasicCar position={[2, 1, 2]} />
 
