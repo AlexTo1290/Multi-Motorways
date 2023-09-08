@@ -14,3 +14,9 @@ export const gameObjectRegistryByType = atomFamily({
   default: [],
   dangerouslyAllowMutability: true
 })
+
+export const gameObjectCollisionRegistry = atomFamily({
+  key: "gameObjectCollisionRegistry",
+  default: [],
+  dangerouslyAllowMutability: true  
+})

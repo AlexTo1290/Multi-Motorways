@@ -11,8 +11,6 @@ function BasicCarScript() {
     // callback function that updates the position of the game object
     const updatePosition = useRecoilCallback(({set}) => () => {
         let newState = {...state };  // gets a copy of the game state
-        // let newPosition = [newState.position[0] + 0.01, newState.position[1] + 0.01, newState.position[2]];
-        // newState.position = newPosition;
 
         let newPosition = [...calculateNextPosition(newState.position[0], newState.position[1], newState.rotation, 0.01), newState.position[2]]
         newState.position = newPosition;

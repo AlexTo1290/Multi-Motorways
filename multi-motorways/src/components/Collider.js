@@ -1,13 +1,36 @@
 import { useGameObject } from "./useGameObject";
-import { getCollisions } from "../recoil/selector/getCollisions";
-import { useRecoilValue } from "recoil";
+import { gameObjectsByTypesSelector } from "../recoil/selector/gameObjectsByTypesSelector";
+import { useRecoilCallback, useRecoilValue } from "recoil";
+import { useEffect } from "react";
+import { gameObjectCollisionRegistry, gameObjectRegistry } from "../recoil/atom/gameObjectRegistry";
 
 function Collider({ types=["all"] }) {
     // Getting game object's state
     const state = useGameObject();
 
     // Checking for collisions with any of the chosen types
-    const collisions = useRecoilValue(getCollisions({position: state?.position, types}));
+    const gameObjects = useRecoilValue(gameObjectsByTypesSelector({ types, excludes: [state?.id], dependencies: state?.position }));
+    
+    const updateCollisions = useRecoilCallback(({set}) => () => {
+        if (state == null) return;
+
+        // checking for collisions with other game objects
+        let collisions = [];
+
+        for (let i = 0; i < gameObjects.length; i++) {
+            if (checkForCollision(state.position, gameObjects[i].position, state.hitbox, gameObjects[i].hitbox)) {
+                collisions.push(gameObjects[i]);
+            }
+        }
+
+        // updating the game object's collisions in the gameObjectCollisionsRegistry atom family
+        set(gameObjectCollisionRegistry(state.id), collisions);
+
+    });
+
+    useEffect(() => {
+        updateCollisions();
+    }, [gameObjects])
 
 }
 
@@ -16,13 +39,20 @@ function Collider({ types=["all"] }) {
  * @param {*} state1 the state of the first game object
  * @param {*} state2 the state of the second game object
  */
-function checkForCollision(state1, state2) {
-    // Getting the positions of the game objects
-    let pos1 = state1.position;
-    let pos2 = state2.position;
+function checkForCollision(firstPosition, secondPosition, firstHitbox, secondHitbox) {
+    // Check to see if hitboxes are colliding
+    let xDiff = Math.abs(firstPosition[0] - secondPosition[0]);
+    let yDiff = Math.abs(firstPosition[1] - secondPosition[1]);
+    let zDiff = Math.abs(firstPosition[2] - secondPosition[2]);
 
-    if (pos1[0] == pos2[0] && pos1[1] == pos2[1]) return true;
-    else return false;
+
+    if (xDiff < ( (firstHitbox[0] / 2) + (secondHitbox[0] / 2)) &&
+            yDiff < ( (firstHitbox[1] / 2) + (secondHitbox[1] / 2)) &&
+            zDiff < ( (firstHitbox[2] / 2) + (secondHitbox[2] / 2)) ) 
+            {
+                return true
+    }
+
 }
 
 export default Collider;
