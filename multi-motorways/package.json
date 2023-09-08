@@ -2,7 +2,6 @@
   "name": "multi-motorways",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://alexto1290.github.io/Multi-Motorways/",
   "dependencies": {
     "@react-three/drei": "^9.80.6",
     "@react-three/fiber": "^8.13.7",
