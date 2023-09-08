@@ -2,6 +2,8 @@ import RoadTile from "./roadTiles";
 import GroundMesh from './groundMesh';
 import { Canvas } from '@react-three/fiber';
 import { useEffect, useState } from 'react';
+import CameraController from "./CameraController";
+import HitBoxGrid from "./HitBoxGrid";
 
 import { useRecoilValue } from "recoil";
 import { cameraPosition } from "../recoil/atom/cameraAtoms";
@@ -20,6 +22,7 @@ const SceneCanvas = () => {
 
             <GroundMesh />
             <RoadTile c1={[-50, -50]} c2={[50, 50]}></RoadTile>
+            <HitBoxGrid></HitBoxGrid>
 
             <BasicCar position={[1, 1.3, 1]} />
             <BasicCar position={[1.2, 1.3, 1]} />
