@@ -8,7 +8,7 @@ function BasicCarSprite() {
     
     return (
         <mesh position={state?.position} rotation-z={rotation}>
-            <planeGeometry args={[0.2, 0.17]}/>
+            <boxGeometry args={[0.2, 0.17, 0.1]}/>
             <meshStandardMaterial color="red" />
         </mesh>
     )
