@@ -7,8 +7,8 @@ function BasicCarSprite() {
     const rotation = state?.rotation;
     
     return (
-        <mesh position={state?.position} rotation-z={rotation}>
-            <boxGeometry args={[0.2, 0.17, 0.1]}/>
+        <mesh position={state?.position} rotation-z={rotation} > 
+            <boxGeometry args={[0.13, 0.1, 0.1]}/>
             <meshStandardMaterial color="red" />
         </mesh>
     )
