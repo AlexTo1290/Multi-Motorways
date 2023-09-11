@@ -12,6 +12,7 @@ import { CameraControls } from '@react-three/drei'
 import { CornerJunction, HorizontalRoad, VerticalRoad } from "../entities/JunctionEntities";
 
 
+import RoadPlacement from "./roadPlacement";
 // import { useFrame } from "@react-three/fiber";
 
 const SceneCanvas = () => {
@@ -20,12 +21,14 @@ const SceneCanvas = () => {
     return (
         <Canvas camera={{ position: cameraPos, fov: 20 }}>
             <ambientLight intensity={0.7 } />
+
             <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
             <pointLight position={[-10, -10, -10]} />
 
             <GroundMesh />
             <RoadTile c1={[-50, -50]} c2={[50, 50]}></RoadTile>
             <HitBoxGrid></HitBoxGrid>
+            <RoadPlacement></RoadPlacement>
 
             <CirclingCar position={[1, 1.3, 1]} />
             <BasicCar position={[-1, 1, 1]} />

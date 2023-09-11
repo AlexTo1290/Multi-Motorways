@@ -50,12 +50,14 @@ function checkForHitboxCollision(firstPosition, secondPosition, firstHitbox, sec
     let yDiff = Math.abs(firstPosition[1] - secondPosition[1]);
     let zDiff = Math.abs(firstPosition[2] - secondPosition[2]);
 
+
     if (xDiff < ( (firstHitbox[0] / 2) + (secondHitbox[0] / 2)) &&
             yDiff < ( (firstHitbox[1] / 2) + (secondHitbox[1] / 2)) &&
             zDiff < ( (firstHitbox[2] / 2) + (secondHitbox[2] / 2)) ) 
             {
                 return true
     }
+
 }
 
 function checkForCentreCollision(firstPosition, secondPosition, secondHitbox) {
