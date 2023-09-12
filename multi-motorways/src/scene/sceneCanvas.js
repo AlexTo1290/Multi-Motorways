@@ -8,18 +8,18 @@ import HitBoxGrid from "./HitBoxGrid";
 import { useRecoilValue } from "recoil";
 import { cameraPosition } from "../recoil/atom/cameraAtoms";
 import { BasicCar, CirclingCar } from "../entities/CarEntities";
-import { CameraControls } from '@react-three/drei'
+import { OrbitControls } from '@react-three/drei'
 import { CornerJunction, HorizontalRoad, VerticalRoad } from "../entities/JunctionEntities";
 
 
 import RoadPlacement from "./roadPlacement";
 // import { useFrame } from "@react-three/fiber";
-
+import { MOUSE, AxesHelper, Vector3 } from 'three'
 const SceneCanvas = () => {
     const cameraPos = useRecoilValue(cameraPosition);
 
     return (
-        <Canvas camera={{ position: cameraPos, fov: 20 }}>
+        <Canvas camera={{ position: cameraPos, fov: 20, up: new Vector3(0,0,1)}}>
             <ambientLight intensity={0.7 } />
 
             <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
@@ -67,14 +67,8 @@ const SceneCanvas = () => {
             {/* <CornerJunction position={[0, 0, 1]} /> */}
 
 
-
-
-
-
-
-
-            <CameraControls />
-
+            <OrbitControls mouseButtons={{ LEFT: MOUSE.PAN, RIGHT: MOUSE.ROTATE }} zoomSpeed={4} maxPolarAngle={4*Math.PI/9} maxDistance={50} minDistance={10}/>
+            <primitive object={new AxesHelper(10)} />
         </Canvas>
     );
 }
