@@ -15,17 +15,42 @@ const HitBoxGrid = () => {
     const [cellsPositions, setCellPositions] = useState([])
 
     function registerBuildClick(x,y){
-        var index = roadTilesArr.indexOf([x,y]);
-        // having problems with this
+        var index = roadTilesArr.findIndex((item) => item[0] === x && item[1] === y);
+
         if (index !== -1) {
-            roadTilesArr.splice(index, 1);
-            alert("removed")
-            setRoadTilesArr(roadTilesArr)
+            const newList = [...roadTilesArr.slice(0, index), ...roadTilesArr.slice(index + 1)];
+            setRoadTilesArr(newList);
         }
         else
         {
-            setRoadTilesArr([...roadTilesArr, [x,y]])
+            setRoadTilesArr([...roadTilesArr, [x,y,0]])
+            console.log(roadTilesArr)
         }
+
+        CategoriseJunctions()
+    }
+
+    function CategoriseJunctions()
+    {
+
+        roadTilesArr.forEach(road => {
+            const x = road[0]
+            const y = road[1]
+            var junctionCode = ""
+            const index = roadTilesArr.findIndex((item) => item[0] === x && item[1] === y);
+
+            junctionCode+=(roadTilesArr.findIndex((item) => item[0] === x-1 && item[1] === y) === -1) ?"1" : "0" // left
+            junctionCode+=(roadTilesArr.findIndex((item) => item[0] === x-1 && item[1] === y+1) === -1) ?"1" : "0" // upleft
+            junctionCode+=(roadTilesArr.findIndex((item) => item[0] === x && item[1] === y+1) === -1) ?"1" : "0" // up
+            junctionCode+=(roadTilesArr.findIndex((item) => item[0] === x+1 && item[1] === y+1) === -1) ?"1" : "0" // upright
+            junctionCode+=(roadTilesArr.findIndex((item) => item[0] === x+1 && item[1] === y) === -1) ?"1" : "0" // right
+            junctionCode+=(roadTilesArr.findIndex((item) => item[0] === x+1 && item[1] === y-1) === -1) ?"1" : "0" // downright
+            junctionCode+=(roadTilesArr.findIndex((item) => item[0] === x && item[1] === y-1) === -1) ?"1" : "0" // down
+            junctionCode+=(roadTilesArr.findIndex((item) => item[0] === x-1 && item[1] === y-1) === -1) ?"1" : "0" // downleft
+            
+            console.log(junctionCode)
+            //setRoadTilesArr([...roadTilesArr.slice(0, index), [x,y, junctionCode], ...roadTilesArr.slice(index + 1)])
+        });
     }
 
     useEffect(()=>{
