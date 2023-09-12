@@ -34,7 +34,7 @@ const HitBoxGrid = () => {
         let copy = []
 
         for (let i = 0; i < roadTilesArr.length; i++) {
-            let road = roadTilesArr[i]
+            let road = roadTilesArr[i] 
             const x = road[0]
             const y = road[1]
             var junctionCode = ""
