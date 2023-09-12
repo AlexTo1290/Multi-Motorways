@@ -11,6 +11,7 @@ function useUpdateBoundingBox({ id, mesh }) {
     if (!boundingBoxCalculated && mesh!==null) {
         mesh.geometry.computeBoundingBox();
         setBoundingBoxCalculated(true);
+        console.log(id)
     }
 
     const updateBoundingBoxAtom = useRecoilCallback(({set, snapshot}) => () => {

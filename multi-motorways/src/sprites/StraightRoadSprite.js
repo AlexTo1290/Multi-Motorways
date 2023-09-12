@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { forwardRef, useRef } from "react";
 import { useGameObject } from "../components/useGameObject";
 import useUpdateBoundingBox from "./useUpdateBoundingBox";
 
@@ -9,7 +9,7 @@ function StraightRoadSprite() {
     useUpdateBoundingBox({ id: state?.id, mesh: mesh.current });
     
     return (
-        <mesh position={state?.position} rotation-z={state?.rotation} ref={mesh}>
+        <mesh position={state?.position} rotation-z={state?.rotation} ref={mesh} name={state?.name}>
             <boxGeometry args={[0.25, 0.25, 0.05]}/>
             <meshStandardMaterial color="light-grey" />
         </mesh>

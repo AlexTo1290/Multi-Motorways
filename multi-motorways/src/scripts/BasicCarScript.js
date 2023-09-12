@@ -14,24 +14,27 @@ function BasicCarScript() {
 
         // Checking for collisions
         let collisions = snapshot.getLoadable(gameObjectCollisionRegistry(state.id)).getValue();
-        console.log(collisions)
+        // console.log(collisions)ffv
         for (let i = 0; i < collisions.length; i++) {
             // checking if the colliding object is a junction
             if (collisions[i].type === "lane") {
                 // updating the direction of this object to correspond to this junction
+                let newRotation = 0;
+
                 switch(collisions[i].name) {
                     case "horizontalLaneRight":
-                        newState.rotation = 0;
+                        newRotation = 0;
                         break;
                     case "horizontalLaneLeft":
-                        newState.rotation = Math.PI;
+                        newRotation = Math.PI;
                         break;
                     case "verticalLaneUp":
-                        newState.rotation = Math.PI / 2;
+                        newRotation = (Math.PI / 2);
                         break;
                     case "verticalLaneDown":
-                        newState.rotation = (Math.PI * 3) / 2;
+                        newRotation = ((Math.PI * 3) / 2);
                 }
+                newState.rotation = newRotation;
             }
         }
 

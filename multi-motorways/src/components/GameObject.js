@@ -14,7 +14,7 @@ export const GameObjectContext = createContext({});
  * @isVisible holds a boolean to whether the object is visible on the canvas
  * @type holds a string stating whether the object is an "Road, Junction, etc"
  */
-function GameObject({ name, position, rotation, children, isVisible=true, type, hitbox=[0, 0, 0] }) {
+function GameObject({ name, position, rotation=0, children, isVisible=true, type, hitbox=[0, 0, 0] }) {
     const [context, setContext] = useState({});
 
     // FUNCTIONS FOR REGISTERING AN UNREGISTERING GAME OBJECTS
