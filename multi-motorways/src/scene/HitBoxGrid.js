@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { useRecoilState } from "recoil";
-import { roadTiles } from "../recoil/atom/roadAtoms";
+import { roadTiles, roadTilesJunctions } from "../recoil/atom/roadAtoms";
 
 const HitBoxGrid = () => {
     const translateGridX=-24.5
@@ -12,9 +12,11 @@ const HitBoxGrid = () => {
     const GRID_HEIGHT = 50
 
     const [roadTilesArr, setRoadTilesArr] = useRecoilState(roadTiles)
+    const [roadTilesJunctionsArr, setRoadTilesJunctionsArr] = useRecoilState(roadTilesJunctions);
+
     const [cellsPositions, setCellPositions] = useState([])
 
-    function registerBuildClick(x,y){
+    function registerBuildClick(x,y) {
         var index = roadTilesArr.findIndex((item) => item[0] === x && item[1] === y);
 
         if (index !== -1) {
@@ -26,14 +28,13 @@ const HitBoxGrid = () => {
             setRoadTilesArr([...roadTilesArr, [x,y,0]])
             console.log(roadTilesArr)
         }
-
-        CategoriseJunctions()
     }
 
-    function CategoriseJunctions()
-    {
+    useEffect(() => {
+        let copy = []
 
-        roadTilesArr.forEach(road => {
+        for (let i = 0; i < roadTilesArr.length; i++) {
+            let road = roadTilesArr[i]
             const x = road[0]
             const y = road[1]
             var junctionCode = ""
@@ -48,10 +49,12 @@ const HitBoxGrid = () => {
             junctionCode+=(roadTilesArr.findIndex((item) => item[0] === x && item[1] === y-1) === -1) ?"1" : "0" // down
             junctionCode+=(roadTilesArr.findIndex((item) => item[0] === x-1 && item[1] === y-1) === -1) ?"1" : "0" // downleft
             
-            console.log(junctionCode)
-            //setRoadTilesArr([...roadTilesArr.slice(0, index), [x,y, junctionCode], ...roadTilesArr.slice(index + 1)])
-        });
-    }
+            copy.push([x,y, junctionCode]);
+        };
+
+        setRoadTilesJunctionsArr(copy);
+        console.log(roadTilesJunctionsArr)
+    }, [roadTilesArr]);
 
     useEffect(()=>{
         var currentBoxX = 0
