@@ -5,7 +5,7 @@ import { gameObjectRegistry, gameObjectRegistryByType } from "../atom/gameObject
 export const gameObjectsByTypesSelector = selectorFamily({
     key: "gameObjectsByTypesSelector",
     get: ({ types, excludes=[], dependencies }) => ({get}) => {
-        if ( types === undefined || types === [] || types === null ) {
+        if ( types === undefined || types === null ) {
             return;
         }
 
