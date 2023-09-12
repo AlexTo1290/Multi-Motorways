@@ -2,7 +2,7 @@ import { useGameObject } from "./useGameObject";
 import { gameObjectsByTypesSelector } from "../recoil/selector/gameObjectsByTypesSelector";
 import { useRecoilCallback, useRecoilValue } from "recoil";
 import { useEffect } from "react";
-import { gameObjectCollisionRegistry, gameObjectRegistry } from "../recoil/atom/gameObjectRegistry";
+import { gameObjectBoundingBoxes, gameObjectCollisionRegistry, gameObjectRegistry } from "../recoil/atom/gameObjectRegistry";
 
 function Collider({ types=["all"], centre=false }) {
     // Getting game object's state
@@ -19,7 +19,7 @@ function Collider({ types=["all"], centre=false }) {
 
         for (let i = 0; i < gameObjects.length; i++) {
             if (centre) {
-                if (checkForCentreCollision(state.position, gameObjects[i].position, gameObjects[i].hitbox)) {
+                if (checkForCollision(state.id, gameObjects[i].id)) {
                     collisions.push(gameObjects[i]);
                 }
             } else if (checkForHitboxCollision(state.position, gameObjects[i].position, state.hitbox, gameObjects[i].hitbox)) {
@@ -32,6 +32,25 @@ function Collider({ types=["all"], centre=false }) {
         set(gameObjectCollisionRegistry(state.id), collisions);
         
     });
+
+    const checkForCollision = useRecoilCallback(({snapshot}) => (id1, id2) => {
+        let boundingBox1 = snapshot.getLoadable(gameObjectBoundingBoxes(id1)).getValue();
+        let boundingBox2 = snapshot.getLoadable(gameObjectBoundingBoxes(id2)).getValue();
+        
+        // console.log(boundingBox1)
+        // console.log(boundingBox2)
+        // console.log(id2)
+
+        if (boundingBox1 == null || boundingBox2 == null) {
+            return null;
+        }
+
+
+    
+        if (boundingBox1.intersectsBox(boundingBox2) && boundingBox2.intersectsBox(boundingBox1)) {
+            return true;
+        }
+    })
 
     useEffect(() => {
         updateCollisions();
@@ -71,5 +90,6 @@ function checkForCentreCollision(firstPosition, secondPosition, secondHitbox) {
             return true;
     }
 }
+
 
 export default Collider;

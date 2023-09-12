@@ -6,7 +6,7 @@ import StraightRoadSprite from "../sprites/StraightRoadSprite";
 
 function Lane({ name, position, rotation, colour, hitbox }) {
     return(
-        <GameObject name={name} position={position} rotation={rotation} type="lane" hitbox={hitbox} >
+        <GameObject name={name} position={position} rotation={rotation} type="lane" hitbox={hitbox}>
             <StraightLaneSprite colour={colour}/>
         </GameObject>
     );
@@ -16,11 +16,11 @@ function Lane({ name, position, rotation, colour, hitbox }) {
 // EXPORTS
 export function VerticalRoad({ position }) {
     let firstLane = [...position];
-    firstLane[0] -= 0.03;
+    firstLane[0] -= 0.01;
     firstLane[2] += 0.02;
 
     let secondLane = [...position];
-    secondLane[0] += 0.03;
+    secondLane[0] += 0.01;
     secondLane[2] += 0.02;
 
     return(
@@ -36,11 +36,11 @@ export function VerticalRoad({ position }) {
 
 export function HorizontalRoad({ position }) {
     let firstLane = [...position];
-    firstLane[1] -= 0.03;
+    firstLane[1] -= 0.02;
     firstLane[2] += 0.02;
 
     let secondLane = [...position];
-    secondLane[1] += 0.03;
+    secondLane[1] += 0.02;
     secondLane[2] += 0.02;
 
     return(

@@ -1,13 +1,15 @@
+import { useRef } from "react";
 import { useGameObject } from "../components/useGameObject";
+import useUpdateBoundingBox from "./useUpdateBoundingBox";
 
 function BasicCarSprite() {
     const state = useGameObject();
 
-    const position = state?.position;
-    const rotation = state?.rotation;
-    
+    const mesh = useRef(null);
+    useUpdateBoundingBox({ id: state?.id, mesh: mesh.current });
+
     return (
-        <mesh position={state?.position} rotation-z={rotation} > 
+        <mesh position={state?.position} rotation-z={state?.rotation} ref={mesh}> 
             <boxGeometry args={[0.13, 0.1, 0.1]}/>
             <meshStandardMaterial color="red" />
         </mesh>
