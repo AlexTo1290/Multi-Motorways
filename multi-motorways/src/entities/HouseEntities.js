@@ -4,8 +4,14 @@ import Collider from "../components/Collider";
 import HouseScript from "../scripts/HouseScript";
 
 
-// Plan to make a house componenet that indicates when a sick person needs to be saved.
-// Will generalise to a Building componenet that can hold different types of buildings e.g. hospital. 
+// ================= HOUSE-CAR COLLISION PLAN =================
+// Kevin Li 14/09/2023
+// - subscribe house to collision registry
+// - detect car-house collision using collider
+// - remove car visually
+// - remove car from registry (waiting for removal function) 
+// - add indicator e.g. score or sound or something (optional)
+
 export function House({ position }) {
 
     // const updateGroup = useCallback((values) => { 

@@ -32,7 +32,7 @@ const SceneCanvas = () => {
 
             <CirclingCar position={[1, 1.3, 1]} />
             <BasicCar position={[-1, 1, 1]} />
-            <House position={[1.5, -1, 1]} />
+            <House position={[0.7, 0, 1]} />
 
             {/* <VerticalRoad position={[1.5, 2.0, 1]} />
             <VerticalRoad position={[1.5, 1.75, 1]} /> */}
