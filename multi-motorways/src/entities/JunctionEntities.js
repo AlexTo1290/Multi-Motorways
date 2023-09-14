@@ -2,20 +2,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import GameObject from "../components/GameObject";
 import StraightLaneSprite from "../sprites/StraightLaneSprite";
 import StraightRoadSprite from "../sprites/StraightRoadSprite";
-import { useFrame } from "@react-three/fiber";
-import { useRecoilCallback } from "recoil";
-import { gameObjectMeshes } from "../recoil/atom/gameObjectRegistry";
-import { Group } from "three";
-
-
-
-function Lane({ name, position, rotation, colour, hitbox, parentMesh }) {
-    return(
-        <GameObject name={name} position={position} rotation={rotation} type="lane" hitbox={hitbox}>
-            <StraightLaneSprite colour={colour} parentMesh={parentMesh} />
-        </GameObject>
-    );
-}
 
 
 // EXPORTS
@@ -29,7 +15,7 @@ export function VerticalRoad({ position }) {
             meshes[0]?.add(meshes[1]);
             meshes[0]?.add(meshes[1]);
         }
-    }, []);
+    });
 
     return(
         <group name="roadGroup" ref={updateGroup}>
@@ -37,11 +23,11 @@ export function VerticalRoad({ position }) {
                 <StraightRoadSprite />
         
                 <GameObject name="verticalLaneUp" position={[0, 0.01, 0]} type="lane" hitbox={[0.03, 0.25, 0.1]}>
-                    <StraightLaneSprite colour={"lightblue"} />
+                    <StraightLaneSprite colour={"lightpink"} />
                 </GameObject>
 
                 <GameObject name="verticalLaneDown" position={[0, -0.01, 0]} type="lane" hitbox={[0.03, 0.25, 0.1]}>
-                    <StraightLaneSprite colour={"lightpink"} />
+                    <StraightLaneSprite colour={"lightblue"} />
                 </GameObject>
             </GameObject>
         </group>
@@ -77,10 +63,29 @@ export function HorizontalRoad({ position }) {
     );
 }
 
-export function CornerJunction({ position }) {
-    let outsideLaneOne = [0, -0.10, 0.02];     // the horizonal lane
-    let outsideLaneTwo = [0.10, 0, 0.02];   // the vertical lane
-    let insideLane = [-0.03, 0.03, 0.02];   
+export function CornerJunction({ position, rotation }) {
+    let outsideLane = [0, -0.10, 0.02];     // the horizontal lane
+    let insideLane = [-0.03, 0.08, 0.02];   
+
+    let outsideLaneDirection = "horizontalLaneLeft";
+    let insideLaneDirection = "verticalLaneUp";
+    console.log("rotation: " + rotation)
+    switch(rotation) {
+        case 0:
+            outsideLaneDirection = "horizontalLaneLeft";
+            insideLaneDirection = "verticalLaneUp";
+        case Math.PI/2:
+            outsideLaneDirection = "verticalLaneDown";
+            insideLaneDirection = "horizontalLaneLeft";
+        case Math.PI:
+            outsideLaneDirection = "horizontalLaneRight";
+            insideLaneDirection = "verticalLaneDown";
+        case ((3*Math.PI) /2 ):
+            outsideLaneDirection = "verticalLaneUp";
+            insideLaneDirection = "horizontalLaneRight";
+    }
+
+
 
     const group = useRef(null);
 
@@ -96,19 +101,15 @@ export function CornerJunction({ position }) {
 
     return(
         <group name="roadGroup" ref={updateGroup}>
-            <GameObject name="cornerJunction" position={position} type="road" >
+            <GameObject name="cornerJunction" position={position} rotation={rotation} type="road" >
                 <StraightRoadSprite />
 
-                <GameObject name="horizontalLaneLeft" position={outsideLaneOne} type="lane" hitbox={[0.03, 0.25, 0.1]}>
+                <GameObject name={outsideLaneDirection} position={outsideLane} type="lane" hitbox={[0.03, 0.25, 0.1]}>
                     <StraightLaneSprite colour={"lightblue"} />
                 </GameObject>
                 
-                <GameObject name="horizontalLaneRight" position={insideLane} type="lane" hitbox={[0.03, 0.25, 0.1]}>
+                <GameObject name={insideLaneDirection} position={insideLane} rotation={Math.PI / 2} type="lane" hitbox={[0.03, 0.25, 0.1]}>
                     <StraightLaneSprite colour={"lightpink"} length={0.05}/>
-                </GameObject>
-
-                <GameObject name="verticalLaneDown" position={outsideLaneTwo} rotation={Math.PI/2} type="lane" hitbox={[0.03, 0.25, 0.1]}>
-                    <StraightLaneSprite colour={"lightblue"} />
                 </GameObject>
 
             </GameObject>

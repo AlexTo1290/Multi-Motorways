@@ -31,21 +31,21 @@ const SceneCanvas = () => {
             <RoadPlacement></RoadPlacement>
 
             <CirclingCar position={[1, 1.3, 1]} />
-            <BasicCar position={[-1, 1, 1]} />
+            <BasicCar position={[-1.75, 1.75, 1]} />
             
 
             {/* <VerticalRoad position={[1.5, 2.0, 1]} />
             <VerticalRoad position={[1.5, 1.75, 1]} /> */}
             {/* <VerticalRoad position={[1.5, 1.5, 1]} /> */}
             {/* <VerticalRoad position={[1.5, 1.25, 1]} /> */}
-            <VerticalRoad position={[1.5, 1.0, 1]} />
+            {/* <VerticalRoad position={[1.5, 1.0, 1]} /> */}
             {/* <VerticalRoad position={[1.5, 0.75, 1]} /> */}
             
 
 
 
 
-            <HorizontalRoad position={[1.5, 1.25, 1]} />
+            {/* <HorizontalRoad position={[1.5, 1.25, 1]} />
 
             <HorizontalRoad position={[1.25, 1.25, 1]} />
             <HorizontalRoad position={[1.25, 1.25, 1]} />
@@ -54,7 +54,7 @@ const SceneCanvas = () => {
             <VerticalRoad position={[0.75, 1.25, 1]} />
 
 
-            <CornerJunction position={[0, 1.0, 1]} />
+            <CornerJunction position={[0, 1.0, 1]} /> */}
 
 {/* 
             <VerticalRoad position={[0.75, 1.0, 1]} />

@@ -14,7 +14,8 @@ function BasicCarScript() {
 
         // Checking for collisions
         let collisions = snapshot.getLoadable(gameObjectCollisionRegistry(state.id)).getValue();
-        // console.log(collisions)ffv
+        console.log(collisions)
+
         for (let i = 0; i < collisions.length; i++) {
             // checking if the colliding object is a junction
             if (collisions[i].type === "lane") {

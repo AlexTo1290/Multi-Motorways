@@ -40,14 +40,14 @@ const HitBoxGrid = () => {
             var junctionCode = ""
             const index = roadTilesArr.findIndex((item) => item[0] === x && item[1] === y);
 
-            junctionCode+=(roadTilesArr.findIndex((item) => item[0] === x-1 && item[1] === y) === -1) ?"1" : "0" // left
-            junctionCode+=(roadTilesArr.findIndex((item) => item[0] === x-1 && item[1] === y+1) === -1) ?"1" : "0" // upleft
-            junctionCode+=(roadTilesArr.findIndex((item) => item[0] === x && item[1] === y+1) === -1) ?"1" : "0" // up
-            junctionCode+=(roadTilesArr.findIndex((item) => item[0] === x+1 && item[1] === y+1) === -1) ?"1" : "0" // upright
-            junctionCode+=(roadTilesArr.findIndex((item) => item[0] === x+1 && item[1] === y) === -1) ?"1" : "0" // right
-            junctionCode+=(roadTilesArr.findIndex((item) => item[0] === x+1 && item[1] === y-1) === -1) ?"1" : "0" // downright
-            junctionCode+=(roadTilesArr.findIndex((item) => item[0] === x && item[1] === y-1) === -1) ?"1" : "0" // down
-            junctionCode+=(roadTilesArr.findIndex((item) => item[0] === x-1 && item[1] === y-1) === -1) ?"1" : "0" // downleft
+            junctionCode+=(roadTilesArr.findIndex((item) => item[0] === x-1 && item[1] === y) === -1) ?"0" : "1" // left
+            junctionCode+=(roadTilesArr.findIndex((item) => item[0] === x-1 && item[1] === y+1) === -1) ?"0" : "1" // upleft
+            junctionCode+=(roadTilesArr.findIndex((item) => item[0] === x && item[1] === y+1) === -1) ?"0" : "1" // up
+            junctionCode+=(roadTilesArr.findIndex((item) => item[0] === x+1 && item[1] === y+1) === -1) ?"0" : "1" // upright
+            junctionCode+=(roadTilesArr.findIndex((item) => item[0] === x+1 && item[1] === y) === -1) ?"0" : "1" // right
+            junctionCode+=(roadTilesArr.findIndex((item) => item[0] === x+1 && item[1] === y-1) === -1) ?"0" : "1" // downright
+            junctionCode+=(roadTilesArr.findIndex((item) => item[0] === x && item[1] === y-1) === -1) ?"0" : "1" // down
+            junctionCode+=(roadTilesArr.findIndex((item) => item[0] === x-1 && item[1] === y-1) === -1) ?"0" : "1" // downleft
             
             copy.push([x,y, junctionCode]);
         };
@@ -73,14 +73,15 @@ const HitBoxGrid = () => {
         }
 
         setCellPositions(generatePosArr)
-    },[])
+    },[roadTilesJunctionsArr])
 
     return(
-        cellsPositions.map((i_pos) =>
-            <mesh position={i_pos} scale={0.9} onClick={(e)=>registerBuildClick((i_pos[0]-translateGridX)/CELL_WIDTH, (i_pos[1]-translateGridY)/CELL_HEIGHT)}>
+        cellsPositions.map((i_pos) => {
+            return <mesh position={i_pos} scale={0.9} onClick={(e)=>registerBuildClick((i_pos[0]-translateGridX)/CELL_WIDTH, (i_pos[1]-translateGridY)/CELL_HEIGHT)}>
                 <planeGeometry />
                 <meshPhongMaterial color="#ff0000" opacity={0.1} transparent />
             </mesh>
+            }
         )
     )
   }

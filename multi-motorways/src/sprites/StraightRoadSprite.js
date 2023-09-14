@@ -9,7 +9,7 @@ function StraightRoadSprite() {
     useUpdateBoundingBox({ id: state?.id, mesh: mesh.current });
     
     return (
-        <mesh position={state?.position} rotation-z={state?.rotation} ref={mesh} name={state?.name}>
+        <mesh position={state?.position} rotation-z={state?.rotation} ref={mesh} name={state?.name} scale={4}>
             <boxGeometry args={[0.25, 0.25, 0.05]}/>
             <meshStandardMaterial color="light-grey" />
         </mesh>

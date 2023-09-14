@@ -9,7 +9,7 @@ function BasicCarSprite() {
     useUpdateBoundingBox({ id: state?.id, mesh: mesh.current });
 
     return (
-        <mesh position={state?.position} rotation-z={state?.rotation} ref={mesh}> 
+        <mesh position={state?.position} rotation-z={state?.rotation} ref={mesh} scale={4}> 
             <boxGeometry args={[0.13, 0.1, 0.1]}/>
             <meshStandardMaterial color="red" />
         </mesh>
