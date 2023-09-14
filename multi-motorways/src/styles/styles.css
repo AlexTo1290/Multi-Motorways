@@ -18,3 +18,13 @@ Canvas{
     left: 0;
     z-index: 1;
 }
+
+div.label {
+    background-color: white;
+    border: 1px solid #888888;
+    padding: 5px;
+    border-radius: 3px;
+    font-family: Arial, Helvetica, sans-serif;
+    offset: 5px;
+  }
+  

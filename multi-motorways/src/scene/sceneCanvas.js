@@ -10,7 +10,7 @@ import { cameraPosition } from "../recoil/atom/cameraAtoms";
 import { BasicCar, CirclingCar } from "../entities/CarEntities";
 import { OrbitControls } from '@react-three/drei'
 import { CornerJunction, HorizontalRoad, VerticalRoad } from "../entities/JunctionEntities";
-
+import { House } from "../entities/HouseEntities";
 
 import RoadPlacement from "./roadPlacement";
 // import { useFrame } from "@react-three/fiber";
@@ -32,7 +32,7 @@ const SceneCanvas = () => {
 
             <CirclingCar position={[1, 1.3, 1]} />
             <BasicCar position={[-1, 1, 1]} />
-            
+            <House position={[1.5, -1, 1]} />
 
             {/* <VerticalRoad position={[1.5, 2.0, 1]} />
             <VerticalRoad position={[1.5, 1.75, 1]} /> */}
