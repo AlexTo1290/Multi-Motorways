@@ -65,7 +65,7 @@ export function HorizontalRoad({ position }) {
 
 export function CornerJunction({ position, rotation = 0 }) {
     let outsideLane = [0, -0.13, 0.02];     // the horizontal lane
-    let insideLane = [-0.00, 0.08, 0.02];   
+    let insideLane = [0, 0.08, 0.02];   
 
     let outsideLaneDirection = "horizontalLaneLeft";
     let insideLaneDirection = "verticalLaneUp";
@@ -92,12 +92,7 @@ export function CornerJunction({ position, rotation = 0 }) {
             outsideLaneDirection = "verticalLaneUp";
             insideLaneDirection = "horizontalLaneRight";
             console.log(4)
-        
-
-
     }
-
-
 
     const group = useRef(null);
 
