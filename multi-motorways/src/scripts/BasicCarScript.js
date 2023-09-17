@@ -36,6 +36,7 @@ function BasicCarScript() {
                         newRotation = ((Math.PI * 3) / 2);
                 }
                 newState.rotation = newRotation;
+                console.log(newState.rotation)
             }
         }
 

@@ -22,13 +22,13 @@ export function VerticalRoad({ position }) {
             <GameObject name="verticalRoad" position={position} rotation={Math.PI / 2} type="road" >
                 <StraightRoadSprite />
         
-                <GameObject name="verticalLaneUp" position={[0, 0.01, 0]} type="lane" hitbox={[0.03, 0.25, 0.1]}>
+                {/* <GameObject name="verticalLaneUp" position={[0, 0.01, 0]} type="lane" hitbox={[0.03, 0.25, 0.1]}>
                     <StraightLaneSprite colour={"lightpink"} />
                 </GameObject>
 
                 <GameObject name="verticalLaneDown" position={[0, -0.01, 0]} type="lane" hitbox={[0.03, 0.25, 0.1]}>
                     <StraightLaneSprite colour={"lightblue"} />
-                </GameObject>
+                </GameObject> */}
             </GameObject>
         </group>
     );
@@ -51,38 +51,50 @@ export function HorizontalRoad({ position }) {
             <GameObject name="horizontalRoad" position={position} type="road" >
                 <StraightRoadSprite />
                 
-                <GameObject name="horizontalLaneRight" position={[0, 0.01, 0]} type="lane" hitbox={[0.03, 0.25, 0.1]}>
+                {/* <GameObject name="horizontalLaneRight" position={[0, 0.01, 0]} type="lane" hitbox={[0.03, 0.25, 0.1]}>
                     <StraightLaneSprite colour={"lightpink"} />
                 </GameObject>
 
                 <GameObject name="horizontalLaneLeft" position={[0, -0.01, 0]} type="lane" hitbox={[0.03, 0.25, 0.1]}>
                     <StraightLaneSprite colour={"lightblue"} />
-                </GameObject>
+                </GameObject> */}
             </GameObject>
         </group>
     );
 }
 
-export function CornerJunction({ position, rotation }) {
-    let outsideLane = [0, -0.10, 0.02];     // the horizontal lane
-    let insideLane = [-0.03, 0.08, 0.02];   
+export function CornerJunction({ position, rotation = 0 }) {
+    let outsideLane = [0, -0.13, 0.02];     // the horizontal lane
+    let insideLane = [-0.00, 0.08, 0.02];   
 
     let outsideLaneDirection = "horizontalLaneLeft";
     let insideLaneDirection = "verticalLaneUp";
-    console.log("rotation: " + rotation)
+    
     switch(rotation) {
         case 0:
             outsideLaneDirection = "horizontalLaneLeft";
             insideLaneDirection = "verticalLaneUp";
+            break;
         case Math.PI/2:
             outsideLaneDirection = "verticalLaneDown";
             insideLaneDirection = "horizontalLaneLeft";
+            console.log(2)
+            break;
+
         case Math.PI:
             outsideLaneDirection = "horizontalLaneRight";
             insideLaneDirection = "verticalLaneDown";
+            console.log(3)
+            break;
+
+
         case ((3*Math.PI) /2 ):
             outsideLaneDirection = "verticalLaneUp";
             insideLaneDirection = "horizontalLaneRight";
+            console.log(4)
+        
+
+
     }
 
 

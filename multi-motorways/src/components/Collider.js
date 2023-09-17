@@ -9,7 +9,7 @@ function Collider({ types=["all"], centre=false }) {
     const state = useGameObject();
 
     // Checking for collisions with any of the chosen types
-    const gameObjects = useRecoilValue(gameObjectsByTypesSelector({ types, excludes: [state?.id] }));
+    const gameObjects = useRecoilValue(gameObjectsByTypesSelector({ types }));
     
     const updateCollisions = useRecoilCallback(({set}) => () => {
         if (state == null) return;
@@ -37,12 +37,12 @@ function Collider({ types=["all"], centre=false }) {
         let boundingBox1 = snapshot.getLoadable(gameObjectBoundingBoxes(id1)).getValue();
         let boundingBox2 = snapshot.getLoadable(gameObjectBoundingBoxes(id2)).getValue();
         
-        // console.log(boundingBox1)
-        // console.log(boundingBox2)
+        
         // console.log(id2)
 
         if (boundingBox1 == null || boundingBox2 == null) {
-            return null;
+            console.log("fail")
+            return false;
         }
 
 

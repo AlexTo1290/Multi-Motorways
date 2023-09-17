@@ -30,7 +30,7 @@ const SceneCanvas = () => {
             <HitBoxGrid></HitBoxGrid>
             <RoadPlacement></RoadPlacement>
 
-            <CirclingCar position={[1, 1.3, 1]} />
+            {/* <CirclingCar position={[1, 1.3, 1]} /> */}
             <BasicCar position={[-1.75, 1.75, 1]} />
             
 
