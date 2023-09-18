@@ -26,7 +26,6 @@ const HitBoxGrid = () => {
         else
         {
             setRoadTilesArr([...roadTilesArr, [x,y,0]])
-            console.log(roadTilesArr)
         }
     }
 
@@ -53,7 +52,6 @@ const HitBoxGrid = () => {
         };
 
         setRoadTilesJunctionsArr(copy);
-        console.log(roadTilesJunctionsArr)
     }, [roadTilesArr]);
 
     useEffect(()=>{

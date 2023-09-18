@@ -1,7 +1,7 @@
 import { useRecoilState } from "recoil";
 import { roadTiles, roadTilesJunctions } from "../recoil/atom/roadAtoms";
 import { useCallback } from "react";
-import { CornerJunction, HorizontalRoad, VerticalRoad } from "../entities/JunctionEntities";
+import { CornerJunction, HorizontalRoad, TJunction, VerticalRoad } from "../entities/JunctionEntities";
 
 const RoadPlacement= () => {
 
@@ -15,6 +15,7 @@ const RoadPlacement= () => {
     const calculateRoadPiece = useCallback((road) => {
         let straightRoads = "";
         let diagonalRoads = "";
+        let position = [translateGridX+(road[0]*CELL_WIDTH), translateGridY+(road[1]*CELL_HEIGHT), 1]
 
         for (let i = 0; i < road[2].length; i+=2) {
             straightRoads += road[2].charAt(i);
@@ -30,87 +31,40 @@ const RoadPlacement= () => {
             case "0010":
             case "1010":
             case "0000":
-                return <HorizontalRoad position={[translateGridX+(road[0]*CELL_WIDTH), translateGridY+(road[1]*CELL_HEIGHT), 1]} />
+                return <HorizontalRoad position={position} />
 
             // Vertical road piece
             case "0100":
             case "0001":
             case "0101":
-                return <VerticalRoad position={[translateGridX+(road[0]*CELL_WIDTH), translateGridY+(road[1]*CELL_HEIGHT), 1]} />
+                return <VerticalRoad position={position} />
             
             // Corner road piece
             case "1100":
-                return <CornerJunction position={[translateGridX+(road[0]*CELL_WIDTH), translateGridY+(road[1]*CELL_HEIGHT), 1]} />
+                return <CornerJunction position={position} />
 
             case "0110":
-                return <CornerJunction rotation={(Math.PI * 3) / 2} position={[translateGridX+(road[0]*CELL_WIDTH), translateGridY+(road[1]*CELL_HEIGHT), 1]} />
+                return <CornerJunction rotation={(Math.PI * 3) / 2} position={position} />
 
             case "0011":
-                return <CornerJunction rotation={Math.PI} position={[translateGridX+(road[0]*CELL_WIDTH), translateGridY+(road[1]*CELL_HEIGHT), 1]} />
+                return <CornerJunction rotation={Math.PI} position={position} />
 
             case "1001":
-                return <CornerJunction rotation={Math.PI / 2} position={[translateGridX+(road[0]*CELL_WIDTH), translateGridY+(road[1]*CELL_HEIGHT), 1]} />
-                
+                return <CornerJunction rotation={Math.PI / 2} position={position} />
+            
+            // T-Junctions
+            case "1011":
+                return <TJunction position={position} />
+            
+            case "0111":
+                return <TJunction rotation={Math.PI / 2} position={position} />
+
+            case "1110":
+                return <TJunction rotation={Math.PI} position={position} />
+            
+            case "1101":
+                return <TJunction rotation={(3 * Math.PI) / 2} position={position} />
         }
-
-        // switch (road[2]) {
-        //     // Horizontal road piece
-        //     case "10000000":
-        //     case "00001000":
-        //     case "10001000":
-        //     case "00000000":
-        //         return <HorizontalRoad position={[translateGridX+(road[0]*CELL_WIDTH), translateGridY+(road[1]*CELL_HEIGHT), 1]} />
-            
-        //     // Vertical road piece
-        //     case "00100000":
-        //     case "00000010":
-        //     case "00100010":
-
-        //     case "01110000":
-        //     case "01100000":
-        //     case "00110000":
-
-        //     case "00000011":
-        //     case "00000111":
-        //     case "00000010":
-
-        //     case "01100010":
-        //     case "00110010":
-        //     case "01110010":
-        //     case "00100011":
-        //     case "00100110":
-        //     case "00100111":
-        //     case "01100110":
-        //     case "01100011":
-        //     case "01100111":
-        //     case "11000110":
-        //     case "11000011":
-        //     case "11000111":
-        //     case "11100110":
-        //     case "11100011":
-        //     case "11100111":
-        //         return <VerticalRoad position={[translateGridX+(road[0]*CELL_WIDTH), translateGridY+(road[1]*CELL_HEIGHT), 1]} />
-            
-        //     // Corner road piece
-        //     // bottom right
-        //     case ("10100000"):
-        //         return <CornerJunction position={[translateGridX+(road[0]*CELL_WIDTH), translateGridY+(road[1]*CELL_HEIGHT), 1]} />
-            
-        //     // top right
-        //     case ("10000010"):
-        //         return <CornerJunction rotation={Math.PI / 2} position={[translateGridX+(road[0]*CELL_WIDTH), translateGridY+(road[1]*CELL_HEIGHT), 1]} />
-            
-        //     // top left
-        //     case ("00001010"):
-        //         return <CornerJunction rotation={Math.PI} position={[translateGridX+(road[0]*CELL_WIDTH), translateGridY+(road[1]*CELL_HEIGHT), 1]} />
-
-        //     // bottom left
-        //     case ("00101000"):
-        //         return <CornerJunction rotation={(Math.PI * 3) / 2} position={[translateGridX+(road[0]*CELL_WIDTH), translateGridY+(road[1]*CELL_HEIGHT), 1]} />
-
-        //     default:
-        //         return <HorizontalRoad position={[translateGridX+(road[0]*CELL_WIDTH), translateGridY+(road[1]*CELL_HEIGHT), 1]} />
-        // }
     });
 
     return(

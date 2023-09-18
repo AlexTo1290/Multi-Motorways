@@ -41,7 +41,7 @@ function Collider({ types=["all"], centre=false }) {
         // console.log(id2)
 
         if (boundingBox1 == null || boundingBox2 == null) {
-            console.log("fail")
+            // console.log("fail")
             return false;
         }
 

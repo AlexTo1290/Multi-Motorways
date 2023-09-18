@@ -1,7 +1,6 @@
-import { forwardRef, useRef } from "react";
+import { useRef } from "react";
 import { useGameObject } from "../components/useGameObject";
 import useUpdateBoundingBox from "./useUpdateBoundingBox";
-import { useFrame } from "@react-three/fiber";
 
 
 function StraightLaneSprite({ colour, length=0.25 }) {
@@ -14,7 +13,7 @@ function StraightLaneSprite({ colour, length=0.25 }) {
     return (
         <mesh position={state?.position} rotation-z={state?.rotation} ref={mesh} name={state?.name}>
             <boxGeometry args={[length, 0.01, 0.05]} />
-            <meshStandardMaterial transparent opacity={0} />
+            <meshStandardMaterial color={colour} />
         </mesh>
     )
 };
