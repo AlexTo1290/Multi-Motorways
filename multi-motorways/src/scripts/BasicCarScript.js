@@ -3,10 +3,20 @@ import { useGameObject } from "../components/useGameObject";
 import { gameObjectCollisionRegistry, gameObjectRegistry } from "../recoil/atom/gameObjectRegistry";
 import { useFrame } from '@react-three/fiber'
 import calculateNextPosition from "../components/utils/calculateNextPosition";
+import { useRef } from "react";
 
 
 function BasicCarScript() {
     const state = useGameObject();  // getting subscribed-to game object state
+    
+    const movementSettings = useRef({
+        maxSpeed: 0.015,
+        acceleration: 0.0001,
+    })
+    const movement = useRef({
+        speed: 0,
+        acceleration: 0.00001,
+    })
 
     // callback function that updates the position of the game object
     const updatePosition = useRecoilCallback(({snapshot, set}) => () => {
@@ -39,12 +49,15 @@ function BasicCarScript() {
             }
         }
 
-        let newPosition = [...calculateNextPosition(newState.position[0], newState.position[1], newState.rotation, 0.02), newState.position[2]]
+        let newPosition = [...calculateNextPosition(newState.position[0], newState.position[1], newState.rotation, movement.current.speed), newState.position[2]]
         newState.position = newPosition;
 
-        
-
         set(gameObjectRegistry(state.id), newState)  // setting the new game state in the game object directory
+
+        // increasing speed of car by the acceleration value
+        if (movement.current.speed < movementSettings.current.maxSpeed) {
+            movement.current.speed += movementSettings.current.acceleration;
+        }
     });
 
     useFrame((game, delta) => {

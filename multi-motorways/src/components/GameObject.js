@@ -1,7 +1,7 @@
 import { nextUniqueId } from "../recoil/atom/idValues"
 import { gameObjectCollisionRegistry, gameObjectRegistry, gameObjectRegistryByType } from "../recoil/atom/gameObjectRegistry";
 import { useRecoilCallback } from "recoil";
-import { useEffect, createContext, useState } from "react";
+import { useEffect, createContext, useState, useRef } from "react";
 
 
 export const GameObjectContext = createContext({});
@@ -16,6 +16,8 @@ export const GameObjectContext = createContext({});
  */
 function GameObject({ name, position, rotation=0, children, isVisible=true, type, hitbox=[0, 0, 0] }) {
     const [context, setContext] = useState({});
+    const mounted = useRef(false);
+    const [id, setId] = useState(null);
 
     // FUNCTIONS FOR REGISTERING AN UNREGISTERING GAME OBJECTS
 
@@ -50,28 +52,30 @@ function GameObject({ name, position, rotation=0, children, isVisible=true, type
         return id;  // returning the id the game object has been registered as
     }, []);
     
-    // ================= TO BE CREATED =================
-    // const unregisterGameObject = useRecoilCallback(({ type, id, }) => {
-    //     const setGameObjects = useSetRecoilState(gameObjectRegistry(id));
-    //     const [gameObjectsByType, setGameObjectsByType] = useRecoilState(gameObjectRegistryByType(type));
+    // removing game object from game registries upon unmount
+    const unmount = useRecoilCallback(({reset, snapshot, set}) => () => {
+        reset(gameObjectRegistry(id));
         
-    //     // removing the game object from the game object registries
-    //     setGameObjects(null)
-        
-    //     let newGameObjects = { ...gameObjectsByType };
-    //     newGameObjects[id] = undefined;
-    //     setGameObjects(newGameObjects);
-        
-    //     return true;
-    // }, []);
+        let gameObjects = [... snapshot.getLoadable(gameObjectRegistryByType(type)).getValue()]
+
+        gameObjects.splice(gameObjects.indexOf(id), 1);
+        set(gameObjectRegistryByType(type), gameObjects);
+    })
 
     
     // Registering the game object to the game objects registry (on the first render)
     useEffect(() => {
         let newContext = { ...context };
-        newContext["id"] = registerGameObject();
+        let id = registerGameObject();
+        newContext["id"] = id;
         setContext(newContext);
+
+        mounted.current = true;
+        setId(id);
+
+        return unmount;  // cleaning up resources
     }, [])
+    
     
 
     if (isVisible) {

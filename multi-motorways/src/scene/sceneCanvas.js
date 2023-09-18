@@ -31,7 +31,7 @@ const SceneCanvas = () => {
             <RoadPlacement></RoadPlacement>
 
             {/* <CirclingCar position={[1, 1.3, 1]} /> */}
-            <BasicCar position={[-1.75, 1.75, 1]} />
+            <BasicCar position={[-1.75, 1.75, 1.2]} />
 
             <OrbitControls mouseButtons={{ LEFT: MOUSE.PAN, RIGHT: MOUSE.ROTATE }} zoomSpeed={4} maxPolarAngle={4*Math.PI/9} maxDistance={50} minDistance={10}/>
             <primitive object={new AxesHelper(10)} />
