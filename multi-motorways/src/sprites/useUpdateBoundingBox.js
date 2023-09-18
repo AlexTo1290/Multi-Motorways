@@ -10,20 +10,24 @@ function useUpdateBoundingBox({ id, mesh }) {
     const mounted = useRef(false);
     const idRef = useRef(id)
 
-    if (!boundingBoxCalculated && mesh!==null) {
-        mesh.geometry.computeBoundingBox();
-        setBoundingBoxCalculated(true);
-        idRef.current = id
-    }
-
     const updateBoundingBoxAtom = useRecoilCallback(({set, snapshot}) => () => {
-        const box = new Box3();
+        let box = new Box3();
         box.copy(mesh.geometry.boundingBox).applyMatrix4(mesh.matrixWorld);
         set(gameObjectBoundingBoxes(id), box);
     })
 
+
+    if (!boundingBoxCalculated && mesh!==null) {
+        mesh.geometry.computeBoundingBox();
+        setBoundingBoxCalculated(true);
+        idRef.current = id
+        updateBoundingBoxAtom()
+        console.log("hi")
+    }
+
+
     // Storing the bounding box in the atom family 
-    useFrame(() => {
+    useEffect(() => {
         if (boundingBoxCalculated) updateBoundingBoxAtom();
     })
     
