@@ -33,9 +33,9 @@ export function BasicCar({position}) {
     */
 
     return (
-        <GameObject name={"basic-car"} rotation={0} position={position} type="car" isVisible={true} hitbox={[0.2, 0.2, 2]}>
+        <GameObject name={"basic-car"} rotation={0} position={position} type="car" isVisible={true} hitbox={[0.2, 0.2, 2]} props={{rotationPerFrame: 0}}>
             <BasicCarSprite />
-            <Collider types={["roadBoundary"]} centre />
+            <Collider types={["roadTurn", "stopTurn"]} centre />
             {/* <Interactable /> */}
             <BasicCarScript />
         </GameObject>
