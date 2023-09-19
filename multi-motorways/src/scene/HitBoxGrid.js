@@ -86,8 +86,8 @@ const HitBoxGrid = () => {
             }
         }
 
-        //console.log("Graph Nodes:")
-        //console.log(nodeEdgeGenerator[0])
+        console.log("Graph Nodes:")
+        console.log(nodeEdgeGenerator[0])
 
 
         // make edges
@@ -113,7 +113,7 @@ const HitBoxGrid = () => {
                     }
                 }
                 if (nodeEdgeGenerator[1].findIndex(junc => junc[0][0]===item[0]+lookX && junc[0][1] === item[1]+lookY && junc[1][0]===item[0] && junc[1][1] === item[1]) === -1)
-                    nodeEdgeGenerator[1].push([[item[0], item[1]], [item[0]+lookX, item[1]+lookY]])
+                    nodeEdgeGenerator[1].push([[item[0], item[1]], [item[0]+lookX, item[1]+lookY],Math.abs(lookX)])
             }
 
 
@@ -134,7 +134,7 @@ const HitBoxGrid = () => {
                 }
 
                 if (nodeEdgeGenerator[1].findIndex(junc => junc[0][0]===item[0]+lookX && junc[0][1] === item[1]+lookY && junc[1][0]===item[0] && junc[1][1] === item[1]) === -1)
-                    nodeEdgeGenerator[1].push([[item[0], item[1]], [item[0]+lookX, item[1]+lookY]])
+                    nodeEdgeGenerator[1].push([[item[0], item[1]], [item[0]+lookX, item[1]+lookY],Math.abs(lookX)])
             }
 
             // find connection to up
@@ -152,7 +152,7 @@ const HitBoxGrid = () => {
                     }
                 }
                 if (nodeEdgeGenerator[1].findIndex(junc => junc[0][0]===item[0]+lookX && junc[0][1] === item[1]+lookY && junc[1][0]===item[0] && junc[1][1] === item[1]) === -1)
-                    nodeEdgeGenerator[1].push([[item[0], item[1]], [item[0]+lookX, item[1]+lookY]])
+                    nodeEdgeGenerator[1].push([[item[0], item[1]], [item[0]+lookX, item[1]+lookY],Math.abs(lookY)])
             }
 
             // find connection to down
@@ -171,12 +171,12 @@ const HitBoxGrid = () => {
                 }
 
                 if (nodeEdgeGenerator[1].findIndex(junc => junc[0][0]===item[0]+lookX && junc[0][1] === item[1]+lookY && junc[1][0]===item[0] && junc[1][1] === item[1]) === -1)
-                    nodeEdgeGenerator[1].push([[item[0], item[1]], [item[0]+lookX, item[1]+lookY]])
+                    nodeEdgeGenerator[1].push([[item[0], item[1]], [item[0]+lookX, item[1]+lookY],Math.abs(lookY)])
             }
         }
 
-        //console.log("Graph Edges:")
-        //console.log(nodeEdgeGenerator[1])
+        console.log("Graph Edges:")
+        console.log(nodeEdgeGenerator[1])
         setGraphRoadsArr(nodeEdgeGenerator)
     }, [roadTilesArr]);
 
