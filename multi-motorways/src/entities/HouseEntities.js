@@ -28,7 +28,7 @@ export function House({ position }) {
                 <HouseSprite />
                 <Collider types={["car"]} />
                 {/* <Interactable /> */}
-                <HouseScript />
+                <HouseScript position={position} />
             </GameObject>
     );
 }

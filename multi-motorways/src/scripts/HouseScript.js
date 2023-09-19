@@ -1,13 +1,28 @@
-import { useRecoilCallback } from "recoil";
 import { useGameObject } from "../components/useGameObject";
-import { gameObjectCollisionRegistry, gameObjectRegistry } from "../recoil/atom/gameObjectRegistry";
-import { useFrame } from '@react-three/fiber'
-import calculateNextPosition from "../components/utils/calculateNextPosition";
+import { useCallback, useState, useEffect } from "react";
+import { BasicCar } from "../entities/CarEntities";
 
-
-function BasicCarScript() {
+function HouseScript({position}) {
     const state = useGameObject();  // getting subscribed-to game object state
+    const [cars, setCars] = useState([]);
+    const addCar = useCallback(() => {
+        let newCars = [...cars];
+        newCars.push(<BasicCar position={position} />)
+        setCars(newCars)
+        console.log(position)
+    })
+    
+    useEffect(() => {
+        let timer = setTimeout(() => {
+        addCar()
+      }, 1000);
+    
+      return () => clearTimeout(timer)
+      });
 
+    return (
+        cars
+    )
 }
 
-export default BasicCarScript;
+export default HouseScript;
