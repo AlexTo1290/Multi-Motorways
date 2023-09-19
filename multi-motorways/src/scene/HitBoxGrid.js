@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from "react"
 import { useRecoilState } from "recoil";
 import { roadTiles, roadTilesJunctions } from "../recoil/atom/roadAtoms";
+import { graphRoads } from "../recoil/atom/graphAtom";
+
 
 const HitBoxGrid = () => {
     const translateGridX=-24.5
@@ -13,6 +15,8 @@ const HitBoxGrid = () => {
 
     const [roadTilesArr, setRoadTilesArr] = useRecoilState(roadTiles)
     const [roadTilesJunctionsArr, setRoadTilesJunctionsArr] = useRecoilState(roadTilesJunctions);
+    const [graphRoadsArr, setGraphRoadsArr] = useRecoilState(graphRoads)
+
 
     const [cellsPositions, setCellPositions] = useState([])
 
@@ -173,7 +177,7 @@ const HitBoxGrid = () => {
 
         //console.log("Graph Edges:")
         //console.log(nodeEdgeGenerator[1])
-
+        setGraphRoadsArr(nodeEdgeGenerator)
     }, [roadTilesArr]);
 
     useEffect(()=>{
