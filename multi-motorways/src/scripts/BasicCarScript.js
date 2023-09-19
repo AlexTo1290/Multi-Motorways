@@ -18,37 +18,64 @@ function BasicCarScript() {
         acceleration: 0.00001,
     })
 
+    const movementRef = useRef({})
+
     // callback function that updates the position of the game object
     const updatePosition = useRecoilCallback(({snapshot, set}) => () => {
         let newState = {...state };  // gets a copy of the game state
 
         // Checking for collisions
         let collisions = snapshot.getLoadable(gameObjectCollisionRegistry(state.id)).getValue();
-        // console.log(collisions)
+        console.log(collisions)
 
         for (let i = 0; i < collisions.length; i++) {
             // checking if the colliding object is a junction
-            if (collisions[i].type === "roadBoundary") {
-                // updating the direction of this object to correspond to this junction
-                let newRotation = 0;
-
+            if (collisions[i].type === "roadTurn" && !movementRef.current.isTurning) {
                 switch(collisions[i].name) {
                     case "right":
-                        newRotation = 0;
+                        newState.props.rotationPerFrame = -0.03;
+                        movementRef.current.nextStop = "right";
+                        movementRef.current.isTurning = true;
                         break;
                     case "left":
-                        newRotation = Math.PI;
+                        newState.props.rotationPerFrame = 0.03;
+                        movementRef.current.nextStop = "left";
+                        movementRef.current.isTurning = true;
+                }
+            }
+
+            else if (collisions[i].type === "stopTurn") {
+                if (collisions[i].props.stopTurn != movementRef.current.nextStop) {
+                    continue;
+                }
+                newState.props.rotationPerFrame = 0;
+                
+                switch(collisions[i].name) {
+                    case "right":
+                        newState.rotation = 0;
+                        movementRef.current.isTurning = false;
                         break;
                     case "up":
-                        newRotation = (Math.PI / 2);
+                        console.log("hi")
+                        newState.rotation = Math.PI / 2;
+                        movementRef.current.isTurning = false;
+                        break;
+                    case "left":
+                        newState.rotation = Math.PI;
+                        movementRef.current.isTurning = false;
                         break;
                     case "down":
-                        newRotation = ((Math.PI * 3) / 2);
+                        newState.rotation = (3 * Math.PI) / 2;
+                        movementRef.current.isTurning = false;
+
                 }
-                newState.rotation = newRotation;
             }
         }
 
+        // updating rotation by rotation per frame
+        newState.rotation += newState.props.rotationPerFrame;
+
+        // updating car position
         let newPosition = [...calculateNextPosition(newState.position[0], newState.position[1], newState.rotation, movement.current.speed), newState.position[2]]
         newState.position = newPosition;
 

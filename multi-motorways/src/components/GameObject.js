@@ -14,7 +14,7 @@ export const GameObjectContext = createContext({});
  * @isVisible holds a boolean to whether the object is visible on the canvas
  * @type holds a string stating whether the object is an "Road, Junction, etc"
  */
-function GameObject({ name, position, rotation=0, children, isVisible=true, type, hitbox=[0, 0, 0] }) {
+function GameObject({ name, position, rotation=0, children, isVisible=true, type, hitbox=[0, 0, 0], props={} }) {
     const [context, setContext] = useState({});
     const mounted = useRef(false);
     const [id, setId] = useState(null);
@@ -38,13 +38,12 @@ function GameObject({ name, position, rotation=0, children, isVisible=true, type
         const id = getUniqueId();
 
         // creating new game object in registries
-        const newGameObject = { id: id, type: type, name: name, position: position, rotation: rotation, isVisible: isVisible, hitbox: hitbox };
+        const newGameObject = { id: id, type: type, name: name, position: position, rotation: rotation, isVisible: isVisible, hitbox: hitbox, props };
         
         // registering the new game object into the game object registries
         set(gameObjectRegistry(id), newGameObject);     // registering to gameObjectsRegistry
 
         let newGameObjects = [... snapshot.getLoadable(gameObjectRegistryByType(type)).contents];    // registering to gameObjetRegistryByType
-        console.log(newGameObject);
         newGameObjects.push(id);
 
         set(gameObjectRegistryByType(type), newGameObjects);

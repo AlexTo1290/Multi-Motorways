@@ -36,12 +36,8 @@ function Collider({ types=["all"], centre=false }) {
     const checkForCollision = useRecoilCallback(({snapshot}) => (id1, id2) => {
         let boundingBox1 = snapshot.getLoadable(gameObjectBoundingBoxes(id1)).getValue();
         let boundingBox2 = snapshot.getLoadable(gameObjectBoundingBoxes(id2)).getValue();
-        
-        
-        // console.log(id2)
 
         if (boundingBox1 == null || boundingBox2 == null) {
-            // console.log("fail")
             return false;
         }
 

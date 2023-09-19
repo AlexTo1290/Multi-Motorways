@@ -22,7 +22,6 @@ function useUpdateBoundingBox({ id, mesh }) {
         setBoundingBoxCalculated(true);
         idRef.current = id
         updateBoundingBoxAtom()
-        console.log("hi")
     }
 
 
@@ -33,7 +32,6 @@ function useUpdateBoundingBox({ id, mesh }) {
     
     const unmount = useRecoilCallback(({set}) => () => {
         set(gameObjectBoundingBoxes(idRef.current), null);
-        console.log("unmouning")
     })
 
     useEffect(() => {
