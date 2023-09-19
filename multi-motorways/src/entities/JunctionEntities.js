@@ -203,6 +203,42 @@ export function TJunction({ position, rotation = 0 }) {
     );
 }
 
+// JUNCTION CONTROLler COMPONENTS
+function TJunctionController({ position, rotation = 0 }) {
+    // Creating two sensors: 1. lays on the major road outer lane, 2. lays on the major road inner lane
+    let sensorOnePosition = [0, 0.0625, 0.2];    // outer lane
+    let sensorTwoPosition = [0, 0.0625, 0.2];    // inner lane
+
+    const group = useRef(null);
+
+    const updateGroup = useCallback((values) => { 
+        if (values) {
+            group.current = values;
+            let meshes = group.current?.getObjectByName("roadGroup")?.children;
+            meshes[0]?.add(meshes[1]);
+            meshes[0]?.add(meshes[1]);
+        }
+    }, []);
+
+    return(
+        <group name="roadGroup" ref={updateGroup}>
+            <GameObject position={position} rotation={rotation}>
+                <GameObject position={sensorOnePosition} type="laneSensor">
+                    <Collider types={["car"]} />
+                    <StraightLaneSprite colour={"grey"} length={0.4} />
+                </GameObject>
+
+                <GameObject position={sensorTwoPosition} type="laneSensor">
+                    <Collider types={["car"]} />
+                    <StraightLaneSprite colour={"grey"} length={0.4} />
+                </GameObject>  
+            </GameObject>
+        </group>
+    )
+}
+
+
+
 // UTIL FUNCTIONS
 function rotateDirection(originalDirection, rotation) {
     // converting originalDirection string into radians
