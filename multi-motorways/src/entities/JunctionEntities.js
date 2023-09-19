@@ -89,20 +89,20 @@ export function CornerJunction({ position, rotation = 0 }) {
             <GameObject name="cornerJunction" position={position} rotation={rotation} type="road" >
                 <StraightRoadSprite />
 
-                <GameObject name={"right"} position={rightTurn} type="roadTurn" hitbox={[0.03, 0.25, 0.1]}>
+                <GameObject name={"right"} position={rightTurn} type="roadTurn" hitbox={[0.03, 0.25, 0.1]} props={{directionAfterTurn: finalDirectionOutside}}>
                     <StraightLaneSprite colour={"lightblue"} length={0.05} />
                 </GameObject>
                 
-                <GameObject name={"left"} position={leftTurn} rotation={Math.PI / 2} type="roadTurn" hitbox={[0.03, 0.25, 0.1]}>
+                <GameObject name={"left"} position={leftTurn} rotation={Math.PI / 2} type="roadTurn" hitbox={[0.03, 0.25, 0.1]} props={{directionAfterTurn: finalDirectionInside}}>
                     <StraightLaneSprite colour={"lightpink"} length={0.05}/>
                 </GameObject>
  
 
-                <GameObject name={finalDirectionOutside} rotation={Math.PI / 2} position={finalDirectionOutsidePosition} type="stopTurn" props={{stopTurn: "right"}} >
+                <GameObject name={finalDirectionOutside} rotation={Math.PI / 2} position={finalDirectionOutsidePosition} type="stopTurn">
                     <StraightLaneSprite colour={"lightblue"} length={0.05}/>
                 </GameObject>
 
-                <GameObject name={finalDirectionInside} position={finalDirectionInsidePosition} type="stopTurn" props={{stopTurn: "left"}}>
+                <GameObject name={finalDirectionInside} position={finalDirectionInsidePosition} type="stopTurn">
                     <StraightLaneSprite colour={"lightpink"} length={0.05} />
                 </GameObject>
 
@@ -123,7 +123,7 @@ export function TJunction({ position, rotation = 0 }) {
     // Variables to stop the turning of the game object
     // minor road
     let finalMinorLeftTurnPosition = [-0.25, -0.05, 0.02];
-    let finalMinorRightTurnPosition = [0.15, 0.07, 0.02];
+    let finalMinorRightTurnPosition = [0.12, 0.07, 0.02];
 
     let finalMinorLeftTurnDirection = rotateDirection("left", rotation);
     let finalMinorRightTurnDirection = rotateDirection("right", rotation);
@@ -134,7 +134,7 @@ export function TJunction({ position, rotation = 0 }) {
     let finalMajorLeftTurnDirection = rotateDirection("down", rotation);
 
     // major outer road
-    let finalMajorRightTurnPosition = [0.07, -0.1, 0.02];
+    let finalMajorRightTurnPosition = [0.07, -0.13, 0.02];
 
     let finalMajorRightTurnDirection = rotateDirection("down", rotation);
     
@@ -159,42 +159,42 @@ export function TJunction({ position, rotation = 0 }) {
 
     return(
         <group name="roadGroup" ref={updateGroup}>
-            <GameObject name="TJunction" position={position} rotation={rotation} type="road" >
+            <GameObject name="TJunction" position={position} rotation={rotation} type="road">
                 {/* Road Sprite */}
                 <StraightRoadSprite />
 
                 {/* Car turners */}
-                <GameObject name={"left"} position={minorLeftTurn} type="roadTurn" hitbox={[0.03, 0.25, 0.1]}>
+                <GameObject name={"left"} position={minorLeftTurn} type="roadTurn" props={{directionAfterTurn: finalMinorLeftTurnDirection}}>
                     <StraightLaneSprite colour={"lime"} length={0.05} />
                 </GameObject>
 
-                <GameObject name={"right"} position={minorRightTurn} type="roadTurn" hitbox={[0.03, 0.25, 0.1]}>
+                <GameObject name={"right"} position={minorRightTurn} type="roadTurn" props={{directionAfterTurn: finalMinorRightTurnDirection}}>
                     <StraightLaneSprite colour={"lightblue"} length={0.05} />
                 </GameObject>
 
-                <GameObject name={"right"} position={majorOuterRightTurn} rotation={Math.PI / 2} type="roadTurn" hitbox={[0.03, 0.25, 0.1]}>
+                <GameObject name={"right"} position={majorOuterRightTurn} rotation={Math.PI / 2} type="roadTurn" props={{directionAfterTurn: finalMajorRightTurnDirection}}>
                     <StraightLaneSprite colour={"violet"} length={0.05} />
                 </GameObject>
                 
-                <GameObject name={"left"} position={majorInnerLeftTurn} rotation={Math.PI / 2} type="roadTurn" hitbox={[0.03, 0.25, 0.1]}>
+                <GameObject name={"left"} position={majorInnerLeftTurn} rotation={Math.PI / 2} type="roadTurn" props={{directionAfterTurn: finalMajorLeftTurnDirection}}>
                     <StraightLaneSprite colour={"lightpink"} length={0.05} />
                 </GameObject>
 
 
                 {/* Turn stoppers */}
-                <GameObject name={finalMinorLeftTurnDirection} rotation={Math.PI / 2} position={finalMinorLeftTurnPosition} type="stopTurn" props={{stopTurn: "left"}}>
+                <GameObject name={finalMinorLeftTurnDirection} rotation={Math.PI / 2} position={finalMinorLeftTurnPosition} type="stopTurn">
                     <StraightLaneSprite colour={"green"} length={0.05} />
                 </GameObject>
 
-                <GameObject name={finalMinorRightTurnDirection} rotation={Math.PI / 2} position={finalMinorRightTurnPosition} type="stopTurn" props={{stopTurn: "right"}}>
+                <GameObject name={finalMinorRightTurnDirection} rotation={Math.PI / 2} position={finalMinorRightTurnPosition} type="stopTurn">
                     <StraightLaneSprite colour={"blue"} length={0.05} />
                 </GameObject>
 
-                <GameObject name={finalMajorRightTurnDirection} position={finalMajorRightTurnPosition} type="stopTurn" props={{stopTurn: "right"}}>
+                <GameObject name={finalMajorRightTurnDirection} position={finalMajorRightTurnPosition} type="stopTurn">
                     <StraightLaneSprite colour={"purple"} length={0.05} />
                 </GameObject>
 
-                <GameObject name={finalMajorLeftTurnDirection} position={finalMajorLeftTurnPosition} type="stopTurn" props={{stopTurn: "left"}}>
+                <GameObject name={finalMajorLeftTurnDirection} position={finalMajorLeftTurnPosition} type="stopTurn">
                     <StraightLaneSprite colour={"red"} length={0.05} />
                 </GameObject>
 
