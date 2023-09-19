@@ -36,7 +36,7 @@ const HitBoxGrid = () => {
             let road = roadTilesArr[i] 
             const x = road[0]
             const y = road[1]
-            var junctionCode = ""
+            let junctionCode = ""
             const index = roadTilesArr.findIndex((item) => item[0] === x && item[1] === y);
 
             junctionCode+=(roadTilesArr.findIndex((item) => item[0] === x-1 && item[1] === y) === -1) ?"0" : "1" // left
@@ -52,6 +52,128 @@ const HitBoxGrid = () => {
         };
 
         setRoadTilesJunctionsArr(copy);
+
+
+        let nodeEdgeGenerator = [[],[]]
+        let nodeEdgeGeneratorBasic = []
+
+        // make nodes
+        for(let i =0 ; i < copy.length; i++){
+            let junctionCode = copy[i][2]
+
+            let straightRoads = "";
+            for (let i = 0; i < junctionCode.length; i+=2) {
+                straightRoads += junctionCode.charAt(i);
+            }
+
+
+            switch(straightRoads){
+                //streight roads
+                case "1010": // hoz
+                case "0101": // ver
+                    continue;
+                    
+                // junctions
+                default:
+                    {
+                        nodeEdgeGenerator[0].push(copy[i]);
+                        nodeEdgeGeneratorBasic.push({x:copy[i][0], y:copy[i][1]});
+                    }
+            }
+        }
+
+        //console.log("Graph Nodes:")
+        //console.log(nodeEdgeGenerator[0])
+
+
+        // make edges
+        for(let i =0 ; i <  nodeEdgeGenerator[0].length; i++){
+
+            let junctionCode = nodeEdgeGenerator[0][i][2]
+            //console.log(junctionCode)
+
+            let item = nodeEdgeGenerator[0][i]
+
+            // find connection to left
+            if(junctionCode[0] === "1"){
+                let lookX = -1
+                let lookY = 0
+                let loop = true
+                while(loop){
+                    if(nodeEdgeGeneratorBasic.findIndex(junc => junc.x=== item[0]+lookX && junc.y === item[1]+lookY) !== -1)
+                    {
+                        loop = false
+                    }
+                    else{
+                        lookX = lookX - 1
+                    }
+                }
+                if (nodeEdgeGenerator[1].findIndex(junc => junc[0][0]===item[0]+lookX && junc[0][1] === item[1]+lookY && junc[1][0]===item[0] && junc[1][1] === item[1]) === -1)
+                    nodeEdgeGenerator[1].push([[item[0], item[1]], [item[0]+lookX, item[1]+lookY]])
+            }
+
+
+            // find connection to right
+            if(junctionCode[4] === "1"){
+                let lookX = 1
+                let lookY = 0
+                let loop = true
+
+                while(loop){
+                    if(nodeEdgeGeneratorBasic.findIndex(junc => junc.x=== item[0]+lookX && junc.y === item[1]+lookY) !== -1)
+                    {
+                        loop = false
+                    }
+                    else{
+                        lookX = lookX + 1
+                    }
+                }
+
+                if (nodeEdgeGenerator[1].findIndex(junc => junc[0][0]===item[0]+lookX && junc[0][1] === item[1]+lookY && junc[1][0]===item[0] && junc[1][1] === item[1]) === -1)
+                    nodeEdgeGenerator[1].push([[item[0], item[1]], [item[0]+lookX, item[1]+lookY]])
+            }
+
+            // find connection to up
+            if(junctionCode[2] === "1"){
+                let lookX = 0
+                let lookY = 1
+                let loop = true
+                while(loop){
+                    if(nodeEdgeGeneratorBasic.findIndex(junc => junc.x=== item[0]+lookX && junc.y === item[1]+lookY) !== -1)
+                    {
+                        loop = false
+                    }
+                    else{
+                        lookY = lookY + 1
+                    }
+                }
+                if (nodeEdgeGenerator[1].findIndex(junc => junc[0][0]===item[0]+lookX && junc[0][1] === item[1]+lookY && junc[1][0]===item[0] && junc[1][1] === item[1]) === -1)
+                    nodeEdgeGenerator[1].push([[item[0], item[1]], [item[0]+lookX, item[1]+lookY]])
+            }
+
+            // find connection to down
+            if(junctionCode[6] === "1"){
+                let lookX = 0
+                let lookY = -1
+                let loop = true
+                while(loop){
+                    if(nodeEdgeGeneratorBasic.findIndex(junc => junc.x=== item[0]+lookX && junc.y === item[1]+lookY) !== -1)
+                    {
+                        loop = false
+                    }
+                    else{
+                        lookY = lookY - 1
+                    }
+                }
+
+                if (nodeEdgeGenerator[1].findIndex(junc => junc[0][0]===item[0]+lookX && junc[0][1] === item[1]+lookY && junc[1][0]===item[0] && junc[1][1] === item[1]) === -1)
+                    nodeEdgeGenerator[1].push([[item[0], item[1]], [item[0]+lookX, item[1]+lookY]])
+            }
+        }
+
+        //console.log("Graph Edges:")
+        //console.log(nodeEdgeGenerator[1])
+
     }, [roadTilesArr]);
 
     useEffect(()=>{
