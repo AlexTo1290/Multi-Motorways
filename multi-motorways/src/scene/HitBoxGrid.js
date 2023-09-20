@@ -200,8 +200,8 @@ const HitBoxGrid = () => {
     },[roadTilesJunctionsArr])
 
     return(
-        cellsPositions.map((i_pos) => {
-            return <mesh position={i_pos} scale={0.9} onClick={(e)=>registerBuildClick((i_pos[0]-translateGridX)/CELL_WIDTH, (i_pos[1]-translateGridY)/CELL_HEIGHT)}>
+        cellsPositions.map((i_pos, idx) => {
+            return <mesh key={idx} position={i_pos} scale={0.9} onClick={(e)=>registerBuildClick((i_pos[0]-translateGridX)/CELL_WIDTH, (i_pos[1]-translateGridY)/CELL_HEIGHT)}>
                 <planeGeometry />
                 <meshPhongMaterial color="#ff0000" opacity={0.1} transparent />
             </mesh>

@@ -4,10 +4,10 @@ import { useRecoilCallback, useRecoilValue } from "recoil";
 import { useEffect } from "react";
 import { gameObjectBoundingBoxes, gameObjectCollisionRegistry, gameObjectRegistry } from "../recoil/atom/gameObjectRegistry";
 
-function Collider({ types=["all"], centre=false }) {
+function Collider({ types=["all"] }) {
     // Getting game object's state
     const state = useGameObject();
-
+    
     // Checking for collisions with any of the chosen types
     const gameObjects = useRecoilValue(gameObjectsByTypesSelector({ types }));
     
@@ -18,11 +18,7 @@ function Collider({ types=["all"], centre=false }) {
         let collisions = [];
 
         for (let i = 0; i < gameObjects.length; i++) {
-            if (centre) {
-                if (checkForCollision(state.id, gameObjects[i].id)) {
-                    collisions.push(gameObjects[i]);
-                }
-            } else if (checkForHitboxCollision(state.position, gameObjects[i].position, state.hitbox, gameObjects[i].hitbox)) {
+            if (checkForCollision(state.id, gameObjects[i].id)) {
                 collisions.push(gameObjects[i]);
             }
         }
@@ -41,8 +37,6 @@ function Collider({ types=["all"], centre=false }) {
             return false;
         }
 
-
-    
         if (boundingBox1.intersectsBox(boundingBox2) && boundingBox2.intersectsBox(boundingBox1)) {
             return true;
         }

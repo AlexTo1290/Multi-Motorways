@@ -13,12 +13,13 @@ function BasicCarScript() {
     const movementSettings = useRef({
         maxSpeed: 0.015,
         acceleration: 0.0001,
+        deceleration: -0.000175
     })
 
     // Storing current unique car properties (speed and acceleration)
     const movementRef = useRef({
         speed: 0,
-        acceleration: 0.00001,
+        acceleration: 0.0001,
         isTurning: false,
     })
 
@@ -26,11 +27,14 @@ function BasicCarScript() {
 
     // callback function that updates the position of the game object
     const updatePosition = useRecoilCallback(({snapshot, set}) => () => {
-        let newState = {...state };  // gets a copy of the game state
+        // console.log(state)
+        let newState = structuredClone(state)  // gets a copy of the game state
 
         // Checking for collisions
         let collisions = snapshot.getLoadable(gameObjectCollisionRegistry(state.id)).getValue();
-        console.log(turnQueue)
+        // console.log(collisions)
+        
+        // console.log(turnQueue)
 
         for (let i = 0; i < collisions.length; i++) {
             // checking if coliding with car-turner object
@@ -42,8 +46,6 @@ function BasicCarScript() {
                             newState.props.rotationPerFrame = -0.03;
                             movementRef.current.directionAfterTurn = collisions[i].props.directionAfterTurn;
                             movementRef.current.isTurning = true;
-                            console.log(collisions[i].props.directionAfterTurn);
-                            
 
                             // dequeuing turn from turnQueue
                             turnQueue.current.shift();
@@ -51,7 +53,6 @@ function BasicCarScript() {
                         break;
 
                     case "left":
-                        console.log(collisions[i].props.directionAfterTurn);
                         // Checking if the next queued turn is "left"
                         if (turnQueue.current[0] === "left") {
                             newState.props.rotationPerFrame = 0.03;
@@ -80,7 +81,6 @@ function BasicCarScript() {
                         movementRef.current.isTurning = false;
                         break;
                     case "up":
-                        console.log("hi")
                         newState.rotation = Math.PI / 2;
                         movementRef.current.isTurning = false;
                         break;
@@ -94,8 +94,22 @@ function BasicCarScript() {
 
                 }
             }
-        }
 
+            // checking if colliding with decelerator
+            else if (collisions[i].type === "decelerate") {
+                if (collisions[i].name === turnQueue[0]) {
+                    movementRef.current.acceleration = movementSettings.current.deceleration;
+                }
+            }
+
+            // checking if colliding with accelerator
+            else if (collisions[i].type === "accelerate") {
+                if (collisions[i].name === turnQueue[0]) {
+                    movementRef.current.acceleration = movementSettings.current.acceleration;
+                }
+            }
+        }
+        
         // updating rotation by rotation per frame
         newState.rotation += newState.props.rotationPerFrame;
 
@@ -106,12 +120,16 @@ function BasicCarScript() {
         set(gameObjectRegistry(state.id), newState)  // setting the new game state in the game object directory
 
         // increasing speed of car by the acceleration value
-        if (movementRef.current.speed < movementSettings.current.maxSpeed) {
-            movementRef.current.speed += movementSettings.current.acceleration;
+        if (movementRef.current.speed < movementSettings.current.maxSpeed || (movementRef.current.acceleration < 0 && movementRef.speed)) {
+            movementRef.current.speed += movementRef.current.acceleration;
+
+            if (movementRef.current.speed < 0) {
+                movementRef.current.speed = 0;
+            }
         }
     });
 
-    useFrame((game, delta) => {
+    useFrame(() => {
         if (state) {
             updatePosition()
         };

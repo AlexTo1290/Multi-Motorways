@@ -1,5 +1,5 @@
 import { nextUniqueId } from "../recoil/atom/idValues"
-import { gameObjectCollisionRegistry, gameObjectRegistry, gameObjectRegistryByType } from "../recoil/atom/gameObjectRegistry";
+import { gameObjectRegistry, gameObjectRegistryByType } from "../recoil/atom/gameObjectRegistry";
 import { useRecoilCallback } from "recoil";
 import { useEffect, createContext, useState, useRef } from "react";
 

@@ -12,7 +12,7 @@ const RoadPlacement= () => {
 
     const [roadTilesJunctionsArr, setRoadTilesJunctionsArr] = useRecoilState(roadTilesJunctions)
 
-    const calculateRoadPiece = useCallback((road) => {
+    const calculateRoadPiece = useCallback((road, key) => {
         let straightRoads = "";
         let diagonalRoads = "";
         let position = [translateGridX+(road[0]*CELL_WIDTH), translateGridY+(road[1]*CELL_HEIGHT), 1]
@@ -31,44 +31,47 @@ const RoadPlacement= () => {
             case "0010":
             case "1010":
             case "0000":
-                return <HorizontalRoad position={position} />
+                return <HorizontalRoad position={position} key={key} />
 
             // Vertical road piece
             case "0100":
             case "0001":
             case "0101":
-                return <VerticalRoad position={position} />
+                return <VerticalRoad position={position} key={key} />
             
             // Corner road piece
             case "1100":
-                return <CornerJunction position={position} />
+                return <CornerJunction position={position} key={key} />
 
             case "0110":
-                return <CornerJunction rotation={(Math.PI * 3) / 2} position={position} />
+                return <CornerJunction rotation={(Math.PI * 3) / 2} position={position} key={key} />
 
             case "0011":
-                return <CornerJunction rotation={Math.PI} position={position} />
+                return <CornerJunction rotation={Math.PI} position={position} key={key} />
 
             case "1001":
-                return <CornerJunction rotation={Math.PI / 2} position={position} />
+                return <CornerJunction rotation={Math.PI / 2} position={position} key={key} />
             
             // T-Junctions
             case "1011":
-                return <TJunction position={position} />
+                return <TJunction position={position} key={key} />
             
             case "0111":
-                return <TJunction rotation={Math.PI / 2} position={position} />
+                return <TJunction rotation={Math.PI / 2} position={position} key={key} />
 
             case "1110":
-                return <TJunction rotation={Math.PI} position={position} />
+                return <TJunction rotation={Math.PI} position={position} key={key} />
             
             case "1101":
-                return <TJunction rotation={(3 * Math.PI) / 2} position={position} />
+                return <TJunction rotation={(3 * Math.PI) / 2} position={position} key={key} />
         }
     });
 
     return(
-        roadTilesJunctionsArr.map((i_pos) => {return calculateRoadPiece(i_pos)})
+        roadTilesJunctionsArr.map((i_pos, idx) => { return (
+                calculateRoadPiece(i_pos, idx)
+            )}
+        )
             // <mesh position={[translateGridX+(i_pos[0]*CELL_WIDTH), translateGridY+(i_pos[1]*CELL_HEIGHT), 1]} scale={0.9}>
             //     <planeGeometry />
             //     <meshPhongMaterial color="red" />
