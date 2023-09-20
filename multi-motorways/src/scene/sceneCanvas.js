@@ -16,6 +16,20 @@ import RoadPlacement from "./roadPlacement";
 // import { useFrame } from "@react-three/fiber";
 import { MOUSE, AxesHelper, Vector3 } from 'three'
 const SceneCanvas = () => {
+    const [shiftPressed, setShiftPressed] = useState(false);
+
+    window.addEventListener("keydown", (e) => {
+        if (e.key === "Shift") {
+            setShiftPressed(true);
+        }
+    })
+
+    window.addEventListener("keyup", (e) => {
+        if (e.key === "Shift") {
+            setShiftPressed(false);
+        }
+    })
+
     const cameraPos = useRecoilValue(cameraPosition);
 
     return (
@@ -27,13 +41,16 @@ const SceneCanvas = () => {
 
             <GroundMesh />
             <RoadTile c1={[-50, -50]} c2={[50, 50]}></RoadTile>
-            <HitBoxGrid></HitBoxGrid>
+            {shiftPressed?
+                <HitBoxGrid></HitBoxGrid>:null
+            }
+            <OrbitControls mouseButtons={{ LEFT: MOUSE.PAN, RIGHT: MOUSE.ROTATE }} enablePan={!shiftPressed} enableRotate={!shiftPressed} zoomSpeed={4} maxPolarAngle={4*Math.PI/9} maxDistance={50} minDistance={10}/>
+
             <RoadPlacement></RoadPlacement>
 
             {/* <CirclingCar position={[1, 1.3, 1]} /> */}
             <BasicCar position={[-1.75, 1.75, 1.2]} />
 
-            <OrbitControls mouseButtons={{ LEFT: MOUSE.PAN, RIGHT: MOUSE.ROTATE }} zoomSpeed={4} maxPolarAngle={4*Math.PI/9} maxDistance={50} minDistance={10}/>
             <primitive object={new AxesHelper(10)} />
         </Canvas>
     );
