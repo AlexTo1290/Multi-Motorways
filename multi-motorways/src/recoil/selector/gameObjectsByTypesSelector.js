@@ -4,8 +4,8 @@ import { gameObjectRegistry, gameObjectRegistryByType } from "../atom/gameObject
 // ===================================== CODE NOT IN USE =========================================
 export const gameObjectsByTypesSelector = selectorFamily({
     key: "gameObjectsByTypesSelector",
-    get: ({ types, excludes=[], dependencies }) => ({get}) => {
-        if ( types === undefined || types === [] || types === null ) {
+    get: ({ types, dependencies }) => ({get}) => {
+        if ( types === undefined || types === null ) {
             return;
         }
 
@@ -21,15 +21,15 @@ export const gameObjectsByTypesSelector = selectorFamily({
         }
 
         // removing any "exclude" ids
-        for (let i = 0; i < excludes.length; i++) {
-            gameObjectIds.splice(gameObjectIds.indexOf(excludes[i]), 1);
-        }
+        // for (let i = 0; i < excludes.length; i++) {
+        //     gameObjectIds.splice(gameObjectIds.indexOf(excludes[i]), 1);
+        // }
         
         // getting the game object corresponding to the ids
         for (let i = 0; i < gameObjectIds.length; i++) {
             gameObjects.push(get(gameObjectRegistry(gameObjectIds[i])));
         }
-
+        
         return gameObjects;
     }
 })

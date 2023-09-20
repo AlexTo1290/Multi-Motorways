@@ -15,8 +15,23 @@ export const gameObjectRegistryByType = atomFamily({
   dangerouslyAllowMutability: true
 })
 
+// Holds the collisions of game objects
 export const gameObjectCollisionRegistry = atomFamily({
   key: "gameObjectCollisionRegistry",
   default: [],
   dangerouslyAllowMutability: true  
+})
+
+
+export const gameObjectMeshes = atomFamily({
+  key: "gameObjectMeshes",
+  default: null,
+  dangerouslyAllowMutability: true
+})
+
+// Holds the hitboxes (bounding boxes) of game objects (which is a Three.Box3 type)
+export const gameObjectBoundingBoxes = atomFamily({
+  key: "gameObjectBoundingBoxes#",
+  default: null,
+  dangerouslyAllowMutability: true
 })
