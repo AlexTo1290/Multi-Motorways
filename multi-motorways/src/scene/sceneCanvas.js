@@ -34,7 +34,7 @@ const SceneCanvas = () => {
 
     return (
         <Canvas className="mainCanvas" camera={{ position: cameraPos, fov: 20, up: new Vector3(0,0,1)}}>
-            <ambientLight intensity={0.7 } />
+            <ambientLight intensity={1} />
 
             <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
             <pointLight position={[-10, -10, -10]} />

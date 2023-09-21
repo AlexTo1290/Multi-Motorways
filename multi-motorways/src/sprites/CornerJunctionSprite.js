@@ -4,9 +4,9 @@ import useUpdateBoundingBox from "./useUpdateBoundingBox";
 import { useLoader } from "@react-three/fiber";
 import { TextureLoader } from "three";
 
-const textureImage = require("./textures/verticalRoad2.jpg");
+const textureImage = require("./textures/cornerJunction2.jpg");
 
-function StraightRoadSprite({position, rotation}) {
+function CornerJunctionSprite({position, rotation}) {
     const state = useGameObject();
 
     const texture = useLoader(TextureLoader, textureImage);
@@ -22,10 +22,10 @@ function StraightRoadSprite({position, rotation}) {
             <meshBasicMaterial attach="material-2" color="#353535" /> {/* py */}
             <meshBasicMaterial attach="material-3" color="#353535" /> {/* ny */}
             <meshBasicMaterial attach="material-4" map={texture} /> {/* pz */}
-            <meshBasicMaterial attach="material-5" color="#353535"  /> {/* nz */}
+            <meshBasicMaterial attach="material-5" color="#353535" /> {/* nz */}
         </mesh>
         </>
     )
 }
 
-export default StraightRoadSprite;
+export default CornerJunctionSprite;

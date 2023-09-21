@@ -15,7 +15,7 @@ export function CirclingCar({position}) {
     */
 
     return (
-        <GameObject name={"basic-car"} rotation={Math.PI / 4} position={position} type="car" isVisible={true} hitbox={[0.2, 0.17, 2]}>
+        <GameObject name={"basic-car"} rotation={Math.PI / 4} position={position} type="car" isVisible={true} >
             <BasicCarSprite />
             <Collider types={["car"]} />
             {/* <Interactable /> */}
@@ -33,7 +33,7 @@ export function BasicCar({position}) {
     */
 
     return (
-        <GameObject name={"basic-car"} rotation={0} position={position} type="car" isVisible={true} hitbox={[0.2, 0.2, 2]} props={{rotationPerFrame: 0}}>
+        <GameObject name={"basic-car"} rotation={0} position={position} type="car" isVisible={true} props={{rotationPerFrame: 0}}>
             <BasicCarSprite />
             <Collider types={["roadTurn", "stopTurn", "decelerate", "accelerate"]} />
             {/* <Interactable /> */}

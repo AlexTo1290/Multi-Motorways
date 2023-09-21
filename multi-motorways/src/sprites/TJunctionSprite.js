@@ -4,9 +4,9 @@ import useUpdateBoundingBox from "./useUpdateBoundingBox";
 import { useLoader } from "@react-three/fiber";
 import { TextureLoader } from "three";
 
-const textureImage = require("./textures/verticalRoad2.jpg");
+const textureImage = require("./textures/TJunction.jpg");
 
-function StraightRoadSprite({position, rotation}) {
+function TJunctionSprite({position, rotation}) {
     const state = useGameObject();
 
     const texture = useLoader(TextureLoader, textureImage);
@@ -28,4 +28,4 @@ function StraightRoadSprite({position, rotation}) {
     )
 }
 
-export default StraightRoadSprite;
+export default TJunctionSprite;

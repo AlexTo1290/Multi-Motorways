@@ -1,6 +1,6 @@
 import { useRecoilValue } from "recoil";
 import { roadTilesJunctionsFamily } from "../recoil/atom/roadAtoms";
-import { CornerJunction, TJunction, VerticalRoad } from "../entities/JunctionEntities";
+import { CornerJunction, HorizontalRoad, TJunction, VerticalRoad } from "../entities/JunctionEntities";
 import { useCallback } from "react";
 
 
@@ -34,10 +34,12 @@ export default function RoadPieceHandler({ position }) {
             case "0010":
             case "1010":
             case "0000":
+                return <VerticalRoad position={formattedPosition} />
+        
             case "0100":
             case "0001":
             case "0101":
-                return <VerticalRoad position={formattedPosition} />
+                return <HorizontalRoad position={formattedPosition} />
             
             // Corner road piece
             case "1100":

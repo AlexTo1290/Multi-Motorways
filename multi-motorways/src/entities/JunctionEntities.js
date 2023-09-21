@@ -8,6 +8,8 @@ import { TJunctionControllerAtom } from "../recoil/atom/junctionControllerAtoms"
 import { useRecoilCallback, useRecoilValue } from "recoil";
 import { nextUniqueId } from "../recoil/atom/idValues";
 import { useFrame } from "@react-three/fiber";
+import CornerJunctionSprite from "../sprites/CornerJunctionSprite";
+import TJunctionSprite from "../sprites/TJunctionSprite";
 
 
 // EXPORTS
@@ -24,7 +26,7 @@ export function VerticalRoad({ position }) {
     return(
         <group name="roadGroup" ref={updateGroup}>
             <GameObject name="verticalRoad" position={position} rotation={Math.PI / 2} type="road" >
-                <StraightRoadSprite position={position}/>
+                <StraightRoadSprite position={position} rotation={Math.PI / 2} />
         
                 {/* <GameObject name="verticalLaneUp" position={[0, 0.01, 0]} type="lane" hitbox={[0.03, 0.25, 0.1]}>
                     <StraightLaneSprite colour={"lightpink"} />
@@ -51,7 +53,7 @@ export function HorizontalRoad({ position }) {
     return(
         <group name="roadGroup" ref={updateGroup}>
             <GameObject name="horizontalRoad" position={position} type="road" >
-                <StraightRoadSprite position={position}/>
+                <StraightRoadSprite position={position} />
                 
                 {/* <GameObject name="horizontalLaneRight" position={[0, 0.01, 0]} type="lane" hitbox={[0.03, 0.25, 0.1]}>
                     <StraightLaneSprite colour={"lightpink"} />
@@ -93,7 +95,7 @@ export function CornerJunction({ position, rotation = 0 }) {
     return(
         <group name="roadGroup" ref={updateGroup}>
             <GameObject name="cornerJunction" position={position} rotation={rotation} type="road" >
-                <StraightRoadSprite position={position}/>
+                <CornerJunctionSprite position={position} rotation={rotation} />
 
                 <GameObject name={"right"} position={rightTurn} type="roadTurn" hitbox={[0.03, 0.25, 0.1]} props={{directionAfterTurn: finalDirectionOutside}}>
                     <StraightLaneSprite colour={"lightblue"} length={0.05} />
@@ -167,7 +169,7 @@ export function TJunction({ position, rotation = 0 }) {
         <group name="roadGroup" ref={updateGroup} >
             <GameObject name="TJunction" position={position} rotation={rotation} type="road">
                 {/* Road Sprite */}
-                <StraightRoadSprite position={position}/>
+                <TJunctionSprite position={position} rotation={rotation} />
 
                 {/* Car turners */}
                 <GameObject name={"left"} position={minorLeftTurn} type="roadTurn" props={{directionAfterTurn: finalMinorLeftTurnDirection}}>
