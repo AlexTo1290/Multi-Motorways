@@ -47,7 +47,7 @@ const SceneCanvas = () => {
 
 
             {/* <CirclingCar position={[1, 1.3, 1]} /> */}
-            <BasicCar position={[-1.75, 1.75, 1.2]} />
+            <BasicCar position={[-1.75, 1.75, 0.3]} />
 
             <primitive object={new AxesHelper(10)} />
         </Canvas>

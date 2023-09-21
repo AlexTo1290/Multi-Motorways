@@ -209,7 +209,7 @@ const HitBoxGrid = ({show}) => {
         // generate mesh cells in a grid pattern
         while ((currentBoxY * CELL_HEIGHT) < GRID_HEIGHT) {
             while ((currentBoxX * CELL_WIDTH) < GRID_WIDTH) {
-                generatePosArr.push([translateGridX + (currentBoxX * CELL_WIDTH), translateGridY + currentBoxY * CELL_HEIGHT, 1])
+                generatePosArr.push([translateGridX + (currentBoxX * CELL_WIDTH), translateGridY + currentBoxY * CELL_HEIGHT, 0.1])
                 currentBoxX += 1;
             }
             currentBoxY += 1;

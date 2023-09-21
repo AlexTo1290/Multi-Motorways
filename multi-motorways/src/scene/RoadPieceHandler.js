@@ -18,7 +18,7 @@ export default function RoadPieceHandler({ position }) {
 
         let straightRoads = "";
         let diagonalRoads = "";
-        let formattedPosition = [translateGridX+(position[0]*CELL_WIDTH), translateGridY+(position[1]*CELL_HEIGHT), 1]
+        let formattedPosition = [translateGridX+(position[0]*CELL_WIDTH), translateGridY+(position[1]*CELL_HEIGHT), 0.1]
 
         for (let i = 0; i < road.length; i+=2) {
             straightRoads += road.charAt(i);
