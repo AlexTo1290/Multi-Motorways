@@ -65,6 +65,8 @@ export default function RoadPieceHandler({ position }) {
             case "1101":
                 return <TJunction rotation={(3 * Math.PI) / 2} position={formattedPosition} />
         }
+
+        return;
     });
 
     return calculateRoadPiece(roadJunction)

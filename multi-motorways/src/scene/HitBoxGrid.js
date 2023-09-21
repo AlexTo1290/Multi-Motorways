@@ -6,7 +6,7 @@ import RoadPieceHandler from "./RoadPieceHandler";
 import { useFrame } from "@react-three/fiber";
 
 
-const HitBoxGrid = () => {
+const HitBoxGrid = ({show}) => {
     const translateGridX = -24.5
     const translateGridY = -24.5
     const CELL_HEIGHT = 1
@@ -30,6 +30,9 @@ const HitBoxGrid = () => {
         var index = roadTilesArr.findIndex((item) => item[0] === x && item[1] === y);
 
         if (index !== -1) {
+            // updating roadJunctionDict
+            resetJunctionCodeInDict(roadTilesArr[index][0].toString() + "," + roadTilesArr[index][1].toString());
+
             const newList = [...roadTilesArr.slice(0, index), ...roadTilesArr.slice(index + 1)];
             setRoadTilesArr(newList);
         }
@@ -43,6 +46,10 @@ const HitBoxGrid = () => {
 
     const updateJunctionCodeInDict = useRecoilCallback(({set}) => (key, code) => {
         set(roadTilesJunctionsFamily(key), code);
+    });
+
+    const resetJunctionCodeInDict = useRecoilCallback(({reset}) => (key) => {
+        reset(roadTilesJunctionsFamily(key));
     });
 
     useEffect(() => {
@@ -215,15 +222,16 @@ const HitBoxGrid = () => {
     return(
         <>
         {roadEntities}
-            
-        {cellsPositions.map((i_pos, idx) => {
+
+        {show ? cellsPositions.map((i_pos, idx) => {
             return <mesh key={idx} position={i_pos} scale={0.9} onPointerDown={(e) => registerBuildClick((i_pos[0] - translateGridX) / CELL_WIDTH, (i_pos[1] - translateGridY) / CELL_HEIGHT)}>
                     <planeGeometry />
                     <meshPhongMaterial color="#ff0000" opacity={0.1} transparent />
                 </mesh>
 
             }
-        )}
+        ) : <> </>}
+    
 
         </>
     )

@@ -40,10 +40,9 @@ const SceneCanvas = () => {
             <pointLight position={[-10, -10, -10]} />
 
             <GroundMesh />
-            <RoadTile c1={[-50, -50]} c2={[50, 50]}></RoadTile>
-            {shiftPressed?
-                <HitBoxGrid></HitBoxGrid>:null
-            }
+            {/* <RoadTile c1={[-50, -50]} c2={[50, 50]}></RoadTile> */}
+            <HitBoxGrid show={shiftPressed} />
+
             <OrbitControls mouseButtons={{ LEFT: MOUSE.PAN, RIGHT: MOUSE.ROTATE }} enablePan={!shiftPressed} enableRotate={!shiftPressed} zoomSpeed={4} maxPolarAngle={4*Math.PI/9} maxDistance={50} minDistance={10}/>
 
 
