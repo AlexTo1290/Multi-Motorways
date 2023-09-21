@@ -6,7 +6,6 @@ import "./styles/styles.css";
 function App() {
   return (
     <div className="Fill">
-
       <SceneCanvas/>
       <Overlay/>
     </div>
