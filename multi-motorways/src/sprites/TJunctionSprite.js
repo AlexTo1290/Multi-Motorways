@@ -1,15 +1,12 @@
 import { useRef } from "react";
 import { useGameObject } from "../components/useGameObject";
 import useUpdateBoundingBox from "./useUpdateBoundingBox";
-import { useLoader } from "@react-three/fiber";
-import { TextureLoader } from "three";
-
-const textureImage = require("./textures/TJunction.jpg");
+import { useTexture } from "@react-three/drei";
 
 function TJunctionSprite({position, rotation}) {
     const state = useGameObject();
 
-    const texture = useLoader(TextureLoader, textureImage);
+    const texture = useTexture("textures/TJunction.jpg");
 
     const mesh = useRef(null);
     useUpdateBoundingBox({ id: state?.id, mesh: mesh.current });

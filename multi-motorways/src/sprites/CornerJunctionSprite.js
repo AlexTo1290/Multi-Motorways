@@ -3,13 +3,13 @@ import { useGameObject } from "../components/useGameObject";
 import useUpdateBoundingBox from "./useUpdateBoundingBox";
 import { useLoader } from "@react-three/fiber";
 import { TextureLoader } from "three";
+import { useTexture } from "@react-three/drei";
 
-const textureImage = require("./textures/cornerJunction2.jpg");
 
 function CornerJunctionSprite({position, rotation}) {
     const state = useGameObject();
 
-    const texture = useLoader(TextureLoader, textureImage);
+    const texture = useTexture("textures/cornerJunction2.jpg");
 
     const mesh = useRef(null);
     useUpdateBoundingBox({ id: state?.id, mesh: mesh.current });

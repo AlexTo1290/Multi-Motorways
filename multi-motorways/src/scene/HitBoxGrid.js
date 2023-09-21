@@ -6,7 +6,7 @@ import RoadPieceHandler from "./RoadPieceHandler";
 import { useFrame } from "@react-three/fiber";
 
 
-const HitBoxGrid = ({show}) => {
+const HitBoxGrid = () => {
     const translateGridX = -24.5
     const translateGridY = -24.5
     const CELL_HEIGHT = 1
@@ -22,9 +22,19 @@ const HitBoxGrid = ({show}) => {
     const [roadEntities, setRoadEntities] = useState([]);
     const nextKey = useRef(0);
 
-    
 
     const [cellsPositions, setCellPositions] = useState([])
+
+    
+    // Hitbox toggling by pressing shift
+    const [shiftPressed, setShiftPressed] = useState(false);
+
+    window.addEventListener("keyup", (e) => {
+        if (e.key === "Shift") {
+            setShiftPressed(!shiftPressed);
+        }
+    })
+
 
     function registerBuildClick(x, y) {
         var index = roadTilesArr.findIndex((item) => item[0] === x && item[1] === y);
@@ -221,7 +231,7 @@ const HitBoxGrid = ({show}) => {
     
     return(<>
         {roadEntities}
-        {show ? cellsPositions.map((i_pos, idx) => {
+        {shiftPressed ? cellsPositions.map((i_pos, idx) => {
             return <mesh key={idx} position={i_pos} scale={0.9} onPointerDown={(e) => registerBuildClick((i_pos[0] - translateGridX) / CELL_WIDTH, (i_pos[1] - translateGridY) / CELL_HEIGHT)}>
                     <planeGeometry />
                     <meshPhongMaterial color="#ff0000" opacity={0.1} transparent />
