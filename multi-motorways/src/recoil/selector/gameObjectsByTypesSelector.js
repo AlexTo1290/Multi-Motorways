@@ -4,6 +4,7 @@ import { gameObjectRegistry, gameObjectRegistryByType } from "../atom/gameObject
 // ===================================== CODE NOT IN USE =========================================
 export const gameObjectsByTypesSelector = selectorFamily({
     key: "gameObjectsByTypesSelector",
+    cachePolicy_UNSTABLE: { eviction: 'most-recent' },
     get: ({ types, dependencies }) => ({get}) => {
         if ( types === undefined || types === null ) {
             return;

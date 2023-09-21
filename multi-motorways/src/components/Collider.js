@@ -4,32 +4,30 @@ import { useRecoilCallback, useRecoilValue } from "recoil";
 import { useEffect } from "react";
 import { gameObjectBoundingBoxes, gameObjectCollisionRegistry, gameObjectRegistry } from "../recoil/atom/gameObjectRegistry";
 
-function Collider({ types=["all"], centre=false }) {
+function Collider({ types=["all"] }) {
     // Getting game object's state
     const state = useGameObject();
-
+    
     // Checking for collisions with any of the chosen types
     const gameObjects = useRecoilValue(gameObjectsByTypesSelector({ types }));
     
-    const updateCollisions = useRecoilCallback(({set}) => () => {
+    const updateCollisions = useRecoilCallback(({snapshot, set}) => () => {
         if (state == null) return;
 
         // checking for collisions with other game objects
         let collisions = [];
 
         for (let i = 0; i < gameObjects.length; i++) {
-            if (centre) {
-                if (checkForCollision(state.id, gameObjects[i].id)) {
-                    collisions.push(gameObjects[i]);
-                }
-            } else if (checkForHitboxCollision(state.position, gameObjects[i].position, state.hitbox, gameObjects[i].hitbox)) {
+            if (checkForCollision(state.id, gameObjects[i].id)) {
                 collisions.push(gameObjects[i]);
             }
         }
         // console.log(collisions)
 
-        // updating the game object's collisions in the gameObjectCollisionsRegistry atom family
-        set(gameObjectCollisionRegistry(state.id), collisions);
+        if (JSON.stringify(snapshot.getLoadable(gameObjectCollisionRegistry(state.id)).getValue()) != JSON.stringify(collisions)) {
+            // updating the game object's collisions in the gameObjectCollisionsRegistry atom family
+            set(gameObjectCollisionRegistry(state.id), collisions);
+        }
         
     });
 
@@ -41,8 +39,6 @@ function Collider({ types=["all"], centre=false }) {
             return false;
         }
 
-
-    
         if (boundingBox1.intersectsBox(boundingBox2) && boundingBox2.intersectsBox(boundingBox1)) {
             return true;
         }
@@ -51,6 +47,13 @@ function Collider({ types=["all"], centre=false }) {
     useEffect(() => {
         updateCollisions();
     })
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            updateCollisions();
+        }, 200);
+        return () => clearTimeout(timer);
+      }, []);
 
 }
 

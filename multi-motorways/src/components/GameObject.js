@@ -1,5 +1,5 @@
 import { nextUniqueId } from "../recoil/atom/idValues"
-import { gameObjectCollisionRegistry, gameObjectRegistry, gameObjectRegistryByType } from "../recoil/atom/gameObjectRegistry";
+import { gameObjectRegistry, gameObjectRegistryByType } from "../recoil/atom/gameObjectRegistry";
 import { useRecoilCallback } from "recoil";
 import { useEffect, createContext, useState, useRef } from "react";
 
@@ -14,10 +14,9 @@ export const GameObjectContext = createContext({});
  * @isVisible holds a boolean to whether the object is visible on the canvas
  * @type holds a string stating whether the object is an "Road, Junction, etc"
  */
-function GameObject({ name, position, rotation=0, children, isVisible=true, type, hitbox=[0, 0, 0], props={} }) {
+function GameObject({ id=-1, name, position, rotation=0, children, isVisible=true, type, hitbox=[0, 0, 0], props={} }) {
     const [context, setContext] = useState({});
     const mounted = useRef(false);
-    const [id, setId] = useState(null);
 
     // FUNCTIONS FOR REGISTERING AN UNREGISTERING GAME OBJECTS
 
@@ -35,7 +34,7 @@ function GameObject({ name, position, rotation=0, children, isVisible=true, type
     // Function - registers a game object to the game object registries
     const registerGameObject = useRecoilCallback(({set, snapshot}) => () => {   
         // getting a unique id for the game object
-        const id = getUniqueId();
+        if (id === -1) id = getUniqueId();
 
         // creating new game object in registries
         const newGameObject = { id: id, type: type, name: name, position: position, rotation: rotation, isVisible: isVisible, hitbox: hitbox, props };
@@ -70,7 +69,6 @@ function GameObject({ name, position, rotation=0, children, isVisible=true, type
         setContext(newContext);
 
         mounted.current = true;
-        setId(id);
 
         return unmount;  // cleaning up resources
     }, [])

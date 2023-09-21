@@ -11,23 +11,29 @@ function useUpdateBoundingBox({ id, mesh }) {
     const idRef = useRef(id)
 
     const updateBoundingBoxAtom = useRecoilCallback(({set, snapshot}) => () => {
+        if (!mesh.geometry?.boundingBox) {
+            mesh.geometry.computeBoundingBox();
+            console.log(mesh)
+        }
+
         let box = new Box3();
         box.copy(mesh.geometry.boundingBox).applyMatrix4(mesh.matrixWorld);
         set(gameObjectBoundingBoxes(id), box);
     })
 
 
-    if (!boundingBoxCalculated && mesh!==null) {
-        mesh.geometry.computeBoundingBox();
-        setBoundingBoxCalculated(true);
-        idRef.current = id
-        updateBoundingBoxAtom()
-    }
 
 
     // Storing the bounding box in the atom family 
     useEffect(() => {
         if (boundingBoxCalculated) updateBoundingBoxAtom();
+
+        else if (!boundingBoxCalculated && mesh!==null) {
+            mesh.geometry.computeBoundingBox();
+            setBoundingBoxCalculated(true);
+            idRef.current = id
+            updateBoundingBoxAtom()
+        }
     })
     
     const unmount = useRecoilCallback(({set}) => () => {
@@ -36,6 +42,7 @@ function useUpdateBoundingBox({ id, mesh }) {
 
     useEffect(() => {
         mounted.current = true;
+
 
         return unmount;
     }, [])
