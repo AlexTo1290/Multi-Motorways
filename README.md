@@ -1,2 +1,2 @@
 # Multi-Motorways
-[🔗 Visit Game](https://alexto1290.github.io/Multi-Motorways/)
+[🔗 Visit Game](https://multi-moterways.onrender.com)

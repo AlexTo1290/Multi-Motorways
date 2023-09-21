@@ -5,7 +5,7 @@ import { atomFamily } from "recoil";
 export const gameObjectRegistry = atomFamily({
     key: "gameObjectRegistry",
     default: null,
-    dangerouslyAllowMutability: true
+    // dangerouslyAllowMutability: true
 })
 
 // Takes a game object type as the key and returns all game object id's of that type
@@ -31,7 +31,7 @@ export const gameObjectMeshes = atomFamily({
 
 // Holds the hitboxes (bounding boxes) of game objects (which is a Three.Box3 type)
 export const gameObjectBoundingBoxes = atomFamily({
-  key: "gameObjectBoundingBoxes#",
+  key: "gameObjectBoundingBoxes",
   default: null,
   dangerouslyAllowMutability: true
 })
