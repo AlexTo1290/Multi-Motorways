@@ -12,22 +12,26 @@ function BasicCarScript() {
     // Storing moving settings for the car
     const movementSettings = useRef({
         maxSpeed: 0.015,
-        acceleration: 0.0001,
-        deceleration: -0.000175
+        acceleration: 0.0002,
+        deceleration: -0.000175 
     })
 
     // Storing current unique car properties (speed and acceleration)
     const movementRef = useRef({
         speed: 0,
-        acceleration: 0.0001,
+        acceleration: 0.0002,
         isTurning: false,
+        turnNumber: -1
     })
 
     const turnQueue = useRef(["left", "left", "right", "left", "left", "right", "left", "left", "right"])
 
     // callback function that updates the position of the game object
-    const updatePosition = useRecoilCallback(({snapshot, set}) => () => {
-        // console.log(state)
+    const updatePosition = useRecoilCallback(({snapshot, set, reset}) => (state) => {
+        if (!state) {
+            return;
+        }
+
         let newState = structuredClone(state)  // gets a copy of the game state
 
         // Checking for collisions
@@ -49,6 +53,11 @@ function BasicCarScript() {
 
                             // dequeuing turn from turnQueue
                             turnQueue.current.shift();
+
+                            // adding turn number (if exists - this is to prevent car from hitting the wrong turn stopper)
+                            if (collisions[i].props?.turnNumber) {
+                                movementRef.current.turnNumber = collisions[i].props.turnNumber;
+                            }            
                         }
                         break;
 
@@ -61,7 +70,11 @@ function BasicCarScript() {
 
                             // dequeuing turn from turnQueue
                             turnQueue.current.shift();
-
+                            
+                            // adding turn number (if exists - this is to prevent car from hitting the wrong turn stopper)
+                            if (collisions[i].props?.turnNumber) {
+                                movementRef.current.turnNumber = collisions[i].props.turnNumber;
+                            }     
                         }
                 }
             }
@@ -70,6 +83,20 @@ function BasicCarScript() {
             else if (collisions[i].type === "stopTurn") {
                 if (collisions[i].name !== movementRef.current.directionAfterTurn) {
                     continue;
+                }
+
+                // if turnNumber in use, checking if colliding junction is the correct turnNumber
+                if (movementRef.current.turnNumber !== -1) {
+                    if (collisions[i].props?.turnNumber) {
+                        if (collisions[i].props.turnNumber !== movementRef.current.turnNumber){
+                            continue;
+                        } else {
+                            // turn stopper with correct turnNumber is found - continue with code
+                            movementRef.current.turnNumber = -1;
+                        }
+                    } else {
+                        continue;
+                    }
                 }
 
                 // stopping the turn
@@ -97,14 +124,14 @@ function BasicCarScript() {
 
             // checking if colliding with decelerator
             else if (collisions[i].type === "decelerate") {
-                if (collisions[i].name === turnQueue[0]) {
+                if (collisions[i].name === turnQueue.current[0]) {
                     movementRef.current.acceleration = movementSettings.current.deceleration;
                 }
             }
 
             // checking if colliding with accelerator
             else if (collisions[i].type === "accelerate") {
-                if (collisions[i].name === turnQueue[0]) {
+                if (collisions[i].name === turnQueue.current[0]) {
                     movementRef.current.acceleration = movementSettings.current.acceleration;
                 }
             }
@@ -117,21 +144,23 @@ function BasicCarScript() {
         let newPosition = [...calculateNextPosition(newState.position[0], newState.position[1], newState.rotation, movementRef.current.speed), newState.position[2]]
         newState.position = newPosition;
 
+        // reset(gameObjectRegistry(state.id))
         set(gameObjectRegistry(state.id), newState)  // setting the new game state in the game object directory
 
         // increasing speed of car by the acceleration value
-        if (movementRef.current.speed < movementSettings.current.maxSpeed || (movementRef.current.acceleration < 0 && movementRef.speed)) {
+        if (movementRef.current.speed < movementSettings.current.maxSpeed || (movementRef.current.acceleration < 0 && movementRef.current.speed > 0)) {
             movementRef.current.speed += movementRef.current.acceleration;
-
+            
             if (movementRef.current.speed < 0) {
                 movementRef.current.speed = 0;
             }
         }
-    });
+
+    }, []);
 
     useFrame(() => {
         if (state) {
-            updatePosition()
+            updatePosition(state)
         };
     })
 }

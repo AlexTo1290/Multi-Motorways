@@ -11,7 +11,7 @@ function Collider({ types=["all"] }) {
     // Checking for collisions with any of the chosen types
     const gameObjects = useRecoilValue(gameObjectsByTypesSelector({ types }));
     
-    const updateCollisions = useRecoilCallback(({set}) => () => {
+    const updateCollisions = useRecoilCallback(({snapshot, set}) => () => {
         if (state == null) return;
 
         // checking for collisions with other game objects
@@ -24,8 +24,10 @@ function Collider({ types=["all"] }) {
         }
         // console.log(collisions)
 
-        // updating the game object's collisions in the gameObjectCollisionsRegistry atom family
-        set(gameObjectCollisionRegistry(state.id), collisions);
+        if (JSON.stringify(snapshot.getLoadable(gameObjectCollisionRegistry(state.id)).getValue()) != JSON.stringify(collisions)) {
+            // updating the game object's collisions in the gameObjectCollisionsRegistry atom family
+            set(gameObjectCollisionRegistry(state.id), collisions);
+        }
         
     });
 
@@ -45,6 +47,13 @@ function Collider({ types=["all"] }) {
     useEffect(() => {
         updateCollisions();
     })
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            updateCollisions();
+        }, 200);
+        return () => clearTimeout(timer);
+      }, []);
 
 }
 

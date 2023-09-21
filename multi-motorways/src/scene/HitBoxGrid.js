@@ -1,7 +1,9 @@
-import { useCallback, useEffect, useState } from "react"
-import { useRecoilState } from "recoil";
-import { roadTiles, roadTilesJunctions } from "../recoil/atom/roadAtoms";
+import { useCallback, useEffect, useRef, useState } from "react"
+import { useRecoilCallback, useRecoilState } from "recoil";
+import { roadTiles, roadTilesJunctions, roadTilesJunctionsFamily } from "../recoil/atom/roadAtoms";
 import { graphRoads } from "../recoil/atom/graphAtom";
+import RoadPieceHandler from "./RoadPieceHandler";
+import { useFrame } from "@react-three/fiber";
 
 
 const HitBoxGrid = () => {
@@ -17,6 +19,10 @@ const HitBoxGrid = () => {
     const [roadTilesJunctionsArr, setRoadTilesJunctionsArr] = useRecoilState(roadTilesJunctions);
     const [graphRoadsArr, setGraphRoadsArr] = useRecoilState(graphRoads)
 
+    const [roadEntities, setRoadEntities] = useState([]);
+    const nextKey = useRef(0);
+
+    
 
     const [cellsPositions, setCellPositions] = useState([])
 
@@ -30,8 +36,14 @@ const HitBoxGrid = () => {
         else
         {
             setRoadTilesArr([...roadTilesArr, [x,y,0]])
+            setRoadEntities([... roadEntities, <RoadPieceHandler key={nextKey.current} position={[x, y, 0]} /> ])
+            nextKey.current += 1;
         }
     }
+
+    const updateJunctionCodeInDict = useRecoilCallback(({set}) => (key, code) => {
+        set(roadTilesJunctionsFamily(key), code);
+    });
 
     useEffect(() => {
         let copy = []
@@ -53,6 +65,11 @@ const HitBoxGrid = () => {
             junctionCode+=(roadTilesArr.findIndex((item) => item[0] === x-1 && item[1] === y-1) === -1) ?"0" : "1" // downleft
             
             copy.push([x,y, junctionCode]);
+
+
+            // updating the code for the junction
+            let key = x.toString() + "," + y.toString();
+            updateJunctionCodeInDict(key, junctionCode);
         };
 
         setRoadTilesJunctionsArr(copy);
@@ -198,15 +215,21 @@ const HitBoxGrid = () => {
 
         setCellPositions(generatePosArr)
     },[roadTilesJunctionsArr])
-
+    
     return(
-        cellsPositions.map((i_pos, idx) => {
+        <>
+        {roadEntities}
+            
+        {cellsPositions.map((i_pos, idx) => {
             return <mesh key={idx} position={i_pos} scale={0.9} onClick={(e)=>registerBuildClick((i_pos[0]-translateGridX)/CELL_WIDTH, (i_pos[1]-translateGridY)/CELL_HEIGHT)}>
-                <planeGeometry />
-                <meshPhongMaterial color="#ff0000" opacity={0.1} transparent />
-            </mesh>
+                    <planeGeometry />
+                    <meshPhongMaterial color="#ff0000" opacity={0.1} transparent />
+                </mesh>
+
             }
-        )
+        )}
+
+        </>
     )
   }
 

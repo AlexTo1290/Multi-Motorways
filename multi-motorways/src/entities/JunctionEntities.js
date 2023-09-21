@@ -5,7 +5,7 @@ import StraightRoadSprite from "../sprites/StraightRoadSprite";
 import Collider from "../components/Collider";
 import TJunctionControllerLaneScript from "../scripts/TJunctionControllerLaneScript";
 import { TJunctionControllerAtom } from "../recoil/atom/junctionControllerAtoms";
-import { useRecoilCallback } from "recoil";
+import { useRecoilCallback, useRecoilValue } from "recoil";
 import { nextUniqueId } from "../recoil/atom/idValues";
 import { useFrame } from "@react-three/fiber";
 
@@ -24,7 +24,7 @@ export function VerticalRoad({ position }) {
     return(
         <group name="roadGroup" ref={updateGroup}>
             <GameObject name="verticalRoad" position={position} rotation={Math.PI / 2} type="road" >
-                <StraightRoadSprite />
+                <StraightRoadSprite position={position}/>
         
                 {/* <GameObject name="verticalLaneUp" position={[0, 0.01, 0]} type="lane" hitbox={[0.03, 0.25, 0.1]}>
                     <StraightLaneSprite colour={"lightpink"} />
@@ -51,7 +51,7 @@ export function HorizontalRoad({ position }) {
     return(
         <group name="roadGroup" ref={updateGroup}>
             <GameObject name="horizontalRoad" position={position} type="road" >
-                <StraightRoadSprite />
+                <StraightRoadSprite position={position}/>
                 
                 {/* <GameObject name="horizontalLaneRight" position={[0, 0.01, 0]} type="lane" hitbox={[0.03, 0.25, 0.1]}>
                     <StraightLaneSprite colour={"lightpink"} />
@@ -93,7 +93,7 @@ export function CornerJunction({ position, rotation = 0 }) {
     return(
         <group name="roadGroup" ref={updateGroup}>
             <GameObject name="cornerJunction" position={position} rotation={rotation} type="road" >
-                <StraightRoadSprite />
+                <StraightRoadSprite position={position}/>
 
                 <GameObject name={"right"} position={rightTurn} type="roadTurn" hitbox={[0.03, 0.25, 0.1]} props={{directionAfterTurn: finalDirectionOutside}}>
                     <StraightLaneSprite colour={"lightblue"} length={0.05} />
@@ -124,7 +124,7 @@ export function TJunction({ position, rotation = 0 }) {
     let minorRightTurn = [-0.07, 0, 0.02];
 
     let majorOuterRightTurn = [0, 0.07, 0.02];
-    let majorInnerLeftTurn = [0.14, -0.07, 0.02];    
+    let majorInnerLeftTurn = [0.12, -0.07, 0.02];    
 
     // Variables to stop the turning of the game object
     // minor road
@@ -167,7 +167,7 @@ export function TJunction({ position, rotation = 0 }) {
         <group name="roadGroup" ref={updateGroup} >
             <GameObject name="TJunction" position={position} rotation={rotation} type="road">
                 {/* Road Sprite */}
-                <StraightRoadSprite />
+                <StraightRoadSprite position={position}/>
 
                 {/* Car turners */}
                 <GameObject name={"left"} position={minorLeftTurn} type="roadTurn" props={{directionAfterTurn: finalMinorLeftTurnDirection}}>
@@ -178,11 +178,11 @@ export function TJunction({ position, rotation = 0 }) {
                     <StraightLaneSprite colour={"lightblue"} length={0.05} />
                 </GameObject>
 
-                <GameObject name={"right"} position={majorOuterRightTurn} rotation={Math.PI / 2} type="roadTurn" props={{directionAfterTurn: finalMajorRightTurnDirection}}>
+                <GameObject name={"right"} position={majorOuterRightTurn} rotation={Math.PI / 2} type="roadTurn" props={{directionAfterTurn: finalMajorRightTurnDirection, turnNumber: 1}}>
                     <StraightLaneSprite colour={"violet"} length={0.05} />
                 </GameObject>
                 
-                <GameObject name={"left"} position={majorInnerLeftTurn} rotation={Math.PI / 2} type="roadTurn" props={{directionAfterTurn: finalMajorLeftTurnDirection}}>
+                <GameObject name={"left"} position={majorInnerLeftTurn} rotation={Math.PI / 2} type="roadTurn" props={{directionAfterTurn: finalMajorLeftTurnDirection, turnNumber: 2}}>
                     <StraightLaneSprite colour={"lightpink"} length={0.05} />
                 </GameObject>
 
@@ -196,11 +196,11 @@ export function TJunction({ position, rotation = 0 }) {
                     <StraightLaneSprite colour={"blue"} length={0.05} />
                 </GameObject>
 
-                <GameObject name={finalMajorRightTurnDirection} position={finalMajorRightTurnPosition} type="stopTurn">
+                <GameObject name={finalMajorRightTurnDirection} position={finalMajorRightTurnPosition} type="stopTurn" props={{turnNumber: 1}}>
                     <StraightLaneSprite colour={"purple"} length={0.05} />
                 </GameObject>
 
-                <GameObject name={finalMajorLeftTurnDirection} position={finalMajorLeftTurnPosition} type="stopTurn">
+                <GameObject name={finalMajorLeftTurnDirection} position={finalMajorLeftTurnPosition} type="stopTurn" props={{turnNumber: 2}}>
                     <StraightLaneSprite colour={"red"} length={0.05} />
                 </GameObject>
 
@@ -237,15 +237,15 @@ function TJunctionController({position, rotation}) {
     const [minorCanTurnLeft, setMinorCanTurnLeft] = useState(true);
     const [minorCanTurnRight, setMinorCanTurnRight] = useState(true);
     const [majorCanTurnRight, setMajorCanTurnRight] = useState(true);
-    
-    useEffect(() => {
-        id.current = getUniqueId()
-    }, [])
+ 
+    const tJunctionController = useRecoilValue(TJunctionControllerAtom(id.current))
 
     // callback function that updates the above variables
-    const updateController = useRecoilCallback(({snapshot}) => () => {
-        let tJunctionController = snapshot.getLoadable(TJunctionControllerAtom(id)).getValue();
-
+    const updateController = useRecoilCallback(() => (tJunctionController) => {
+        if (tJunctionController?.inner === undefined && tJunctionController?.outer === undefined) {
+            return;
+        }
+        
         // Checking if major inner lane is free
         if (!tJunctionController.inner) {
             setMinorCanTurnLeft(true);
@@ -264,13 +264,17 @@ function TJunctionController({position, rotation}) {
         }
     });
 
-    // updating the controller on every frame
-    useFrame(() => {
-        updateController()
-    })
-
+    // Updating controller when tJunctionCollisions changes
+    useEffect(() => {
+        updateController(tJunctionController);
+    }, [tJunctionController])
     
+    // Creating the top-layer game object id
+    useEffect(() => {
+        id.current = getUniqueId();
+    }, []);
 
+    // Creating mesh group
     const group = useRef(null);
 
     const updateGroup = useCallback((values) => { 
@@ -291,47 +295,47 @@ function TJunctionController({position, rotation}) {
     
     return(<group parent={null} name="junctionController" ref={updateGroup}>
         {/* Creating traffic sensor objects */}
-        <GameObject id={id} position={position} rotation={rotation} type="junctionController">
+        <GameObject id={id.current} position={position} rotation={rotation} type="junctionController">
             <GameObject position={outerLaneSensorPosition} type="laneSensor">
                 <Collider types={["car"]} />
                 <StraightLaneSprite colour={"grey"} length={0.4} />
-                <TJunctionControllerLaneScript controllerObjectId={id} lane="outer" />
+                <TJunctionControllerLaneScript controllerObjectId={id.current} lane="outer" />
             </GameObject>
 
             <GameObject position={innerLaneSensorPosition} type="laneSensor">
                 <Collider types={["car"]} />
                 <StraightLaneSprite colour={"grey"} length={0.4} />
-                <TJunctionControllerLaneScript controllerObjectId={id} lane="inner" />
+                <TJunctionControllerLaneScript controllerObjectId={id.current} lane="inner" />
             </GameObject>
 
             {/* Creating traffic-control objects */}
             {minorCanTurnLeft ? ( 
                 <>
                     {/* Creating acceleration line */}
-                    <GameObject name="left" position={[-0.07, -0.15, 0.02]} type="accelerate">
-                        <StraightLaneSprite colour={"brown"} length={0.06} />
+                    <GameObject name="left" rotation={Math.PI / 2} position={[-0.07, -0.35, 0.02]} type="accelerate">
+                        <StraightLaneSprite colour={"brown"} length={0.25} />
                     </GameObject>
                 </>
 
             ) : (<>
                     {/* Creating deceleration line */}
-                    <GameObject name="left" position={[-0.07, -0.35, 0.02]} type="decelerate">
-                        <StraightLaneSprite colour={"yellow"} length={0.06} />
+                    <GameObject name="left" rotation={Math.PI / 2} position={[-0.07, -0.35, 0.02]} type="decelerate">
+                        <StraightLaneSprite colour={"yellow"} length={0.25} />
                     </GameObject>
             </>)}
 
             {minorCanTurnRight ? (
                 <>
                     {/* Creating acceleration line */}
-                    <GameObject name="right" position={[-0.07, -0.15, 0.02]} type="accelerate">
-                        <StraightLaneSprite colour={"brown"} length={0.06} />
+                    <GameObject name="right" rotation={Math.PI / 2} position={[-0.07, -0.35, 0.02]} type="accelerate">
+                        <StraightLaneSprite colour={"brown"} length={0.25} />
                     </GameObject>
                 </>
             ) : (
                 <>
                     {/* Creating deceleration line */}
-                    <GameObject name="right" position={[-0.07, -0.35, 0.02]} type="decelerate">
-                        <StraightLaneSprite colour={"yellow"} length={0.06} />
+                    <GameObject name="right" rotation={Math.PI / 2} position={[-0.07, -0.35, 0.02]} type="decelerate">
+                        <StraightLaneSprite colour={"yellow"} length={0.25} />
                     </GameObject>
                 </>
             )}
@@ -339,15 +343,15 @@ function TJunctionController({position, rotation}) {
             {majorCanTurnRight ? (
                 <>
                     {/* Creating acceleration line */}
-                    <GameObject name="right" rotation={Math.PI / 2} position={[-0.35, 0, 0.02]} type="accelerate">
-                        <StraightLaneSprite colour={"brown"} length={0.06} />
+                    <GameObject name="right" position={[-0.125, 0, 0.02]} type="accelerate">
+                        <StraightLaneSprite colour={"brown"} length={0.25} />
                     </GameObject>
                 </>
             ) : (
                 <>
                     {/* Creating deceleration line */}
-                    <GameObject name="right" position={[-0.35, 0.07, 0.02]} rotation={Math.PI / 2} type="decelerate">
-                        <StraightLaneSprite colour={"yellow"} length={0.06} />
+                    <GameObject name="right" position={[-0.125, 0, 0.02]} rotation={Math.PI / 2} type="decelerate">
+                        <StraightLaneSprite colour={"yellow"} length={0.25} />
                     </GameObject>
                 </>
             )}

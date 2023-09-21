@@ -12,7 +12,7 @@ import { OrbitControls } from '@react-three/drei'
 import { CornerJunction, HorizontalRoad, TJunction, VerticalRoad } from "../entities/JunctionEntities";
 
 
-import RoadPlacement from "./roadPlacement";
+
 // import { useFrame } from "@react-three/fiber";
 import { MOUSE, AxesHelper, Vector3 } from 'three'
 const SceneCanvas = () => {
@@ -28,7 +28,6 @@ const SceneCanvas = () => {
             <GroundMesh />
             <RoadTile c1={[-50, -50]} c2={[50, 50]}></RoadTile>
             <HitBoxGrid></HitBoxGrid>
-            <RoadPlacement></RoadPlacement>
 
             {/* <CirclingCar position={[1, 1.3, 1]} /> */}
             <BasicCar position={[-1.75, 1.75, 1.2]} />
