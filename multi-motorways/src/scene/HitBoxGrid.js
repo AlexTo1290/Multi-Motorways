@@ -6,7 +6,7 @@ import RoadPieceHandler from "./RoadPieceHandler";
 import { useFrame } from "@react-three/fiber";
 
 
-const HitBoxGrid = () => {
+const HitBoxGrid = ({showHitbox}) => {
     const translateGridX = -24.5
     const translateGridY = -24.5
     const CELL_HEIGHT = 1
@@ -27,13 +27,9 @@ const HitBoxGrid = () => {
 
     
     // Hitbox toggling by pressing shift
-    const [shiftPressed, setShiftPressed] = useState(false);
+    const hitboxes = useRef();
 
-    window.addEventListener("keyup", (e) => {
-        if (e.key === "Shift") {
-            setShiftPressed(!shiftPressed);
-        }
-    })
+
 
 
     function registerBuildClick(x, y) {
@@ -227,17 +223,34 @@ const HitBoxGrid = () => {
         }
 
         setCellPositions(generatePosArr)
-    },[roadTilesJunctionsArr])
-    
-    return(<>
-        {roadEntities}
-        {shiftPressed ? cellsPositions.map((i_pos, idx) => {
+        
+        // Creating the hitbox objects
+        hitboxes.current = cellsPositions.map((i_pos, idx) => {
             return <mesh key={idx} position={i_pos} scale={0.9} onPointerDown={(e) => registerBuildClick((i_pos[0] - translateGridX) / CELL_WIDTH, (i_pos[1] - translateGridY) / CELL_HEIGHT)}>
                     <planeGeometry />
                     <meshPhongMaterial color="#ff0000" opacity={0.1} transparent />
                 </mesh>
             }
-        ) : <></>}
+        )
+    },[roadTilesJunctionsArr, showHitbox])
+
+
+    // Making road preset
+    useEffect(() => {
+        registerBuildClick(23, 23);
+        registerBuildClick(23, 24);
+        registerBuildClick(23, 25);
+        registerBuildClick(23, 26);
+        registerBuildClick(23, 27);
+        registerBuildClick(24, 27);
+        registerBuildClick(25, 27);
+    }, [])  
+    
+
+    
+    return(<>
+        {roadEntities}
+        {showHitbox ? hitboxes.current : <></>}
         </>)
 }
 

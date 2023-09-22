@@ -281,7 +281,7 @@ function TJunctionController({position, rotation}) {
 
     const updateGroup = useCallback((values) => { 
         group.parent = null
-
+        console.log("uppy")
         if (values) {
             group.current = values;
             let meshes = group.current?.getObjectByName("junctionController")?.children;
@@ -311,52 +311,80 @@ function TJunctionController({position, rotation}) {
             </GameObject>
 
             {/* Creating traffic-control objects */}
+            <group>
+
             {minorCanTurnLeft ? ( 
                 <>
                     {/* Creating acceleration line */}
                     <GameObject name="left" rotation={Math.PI / 2} position={[-0.07, -0.35, 0.02]} type="accelerate">
-                        <StraightLaneSprite colour={"brown"} length={0.25} />
+                        <StraightLaneSprite colour={"brown"} length={0.15} />
                     </GameObject>
                 </>
 
-            ) : (<>
+            ) : (<></>)}
+            </group>
+
+
+            <group>
+
+            {!minorCanTurnLeft ? (<>
                     {/* Creating deceleration line */}
                     <GameObject name="left" rotation={Math.PI / 2} position={[-0.07, -0.35, 0.02]} type="decelerate">
-                        <StraightLaneSprite colour={"yellow"} length={0.25} />
+                        <StraightLaneSprite colour={"yellow"} length={0.15} />
                     </GameObject>
-            </>)}
+            </>) : <></>}
+            </group>
+
+            <group>
 
             {minorCanTurnRight ? (
                 <>
                     {/* Creating acceleration line */}
                     <GameObject name="right" rotation={Math.PI / 2} position={[-0.07, -0.35, 0.02]} type="accelerate">
-                        <StraightLaneSprite colour={"brown"} length={0.25} />
+                        <StraightLaneSprite colour={"brown"} length={0.15} />
                     </GameObject>
                 </>
             ) : (
+                <></>
+            )}
+            </group>
+
+
+            <group>
+
+            {!minorCanTurnRight ? (
                 <>
                     {/* Creating deceleration line */}
                     <GameObject name="right" rotation={Math.PI / 2} position={[-0.07, -0.35, 0.02]} type="decelerate">
-                        <StraightLaneSprite colour={"yellow"} length={0.25} />
+                        <StraightLaneSprite colour={"yellow"} length={0.15} />
                     </GameObject>
                 </>
-            )}
+            ) : <></>}
+            </group>
+
+
+            <group>
 
             {majorCanTurnRight ? (
                 <>
                     {/* Creating acceleration line */}
                     <GameObject name="right" position={[-0.125, 0, 0.02]} type="accelerate">
-                        <StraightLaneSprite colour={"brown"} length={0.25} />
+                        <StraightLaneSprite colour={"brown"} length={0.15} />
                     </GameObject>
                 </>
-            ) : (
+            ) : <></>}
+            </group>
+
+            <group>
+            {!majorCanTurnRight ? (
                 <>
                     {/* Creating deceleration line */}
-                    <GameObject name="right" position={[-0.125, 0, 0.02]} rotation={Math.PI / 2} type="decelerate">
-                        <StraightLaneSprite colour={"yellow"} length={0.25} />
+                    <GameObject name="right" position={[-0.125, 0, 0.02]} type="decelerate">
+                        <StraightLaneSprite colour={"yellow"} length={0.15} />
                     </GameObject>
                 </>
-            )}
+            ) : <></>}
+            </group>
 
         </GameObject>
     </group>)

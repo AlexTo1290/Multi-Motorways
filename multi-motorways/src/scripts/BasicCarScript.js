@@ -6,14 +6,14 @@ import calculateNextPosition from "../components/utils/calculateNextPosition";
 import { useRef, useState } from "react";
 
 
-function BasicCarScript() {
+function BasicCarScript({directions=["left", "left", "right", "left", "left", "right", "left", "left", "right"]}) {
     const state = useGameObject();  // getting subscribed-to game object state
     
     // Storing moving settings for the car
     const movementSettings = useRef({
         maxSpeed: 0.015,
         acceleration: 0.0002,
-        deceleration: -0.000175 
+        deceleration: -0.01 
     })
 
     // Storing current unique car properties (speed and acceleration)
@@ -24,7 +24,7 @@ function BasicCarScript() {
         turnNumber: -1
     })
 
-    const turnQueue = useRef(["left", "left", "right", "left", "left", "right", "left", "left", "right"])
+    const turnQueue = useRef(directions)
 
     // callback function that updates the position of the game object
     const updatePosition = useRecoilCallback(({snapshot, set, reset}) => (state) => {
@@ -124,8 +124,10 @@ function BasicCarScript() {
 
             // checking if colliding with decelerator
             else if (collisions[i].type === "decelerate") {
+                console.log("kkak")
                 if (collisions[i].name === turnQueue.current[0]) {
                     movementRef.current.acceleration = movementSettings.current.deceleration;
+                    console.log("decelerate")
                 }
             }
 
@@ -138,7 +140,9 @@ function BasicCarScript() {
         }
         
         // updating rotation by rotation per frame
-        newState.rotation += newState.props.rotationPerFrame;
+        if (movementRef.current.acceleration > 0) {
+            newState.rotation += (movementRef.current.speed / movementSettings.current.maxSpeed) * newState.props.rotationPerFrame;
+        }
 
         // updating car position
         let newPosition = [...calculateNextPosition(newState.position[0], newState.position[1], newState.rotation, movementRef.current.speed), newState.position[2]]
@@ -153,6 +157,7 @@ function BasicCarScript() {
             
             if (movementRef.current.speed < 0) {
                 movementRef.current.speed = 0;
+                console.log(movementRef.current.speed)
             }
         }
 

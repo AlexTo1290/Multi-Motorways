@@ -24,7 +24,7 @@ export function CirclingCar({position}) {
     );
 }
 
-export function BasicCar({position}) {
+export function BasicCar({position, directions}) {
     /* 
     <Sprite />
     <Collider />
@@ -37,7 +37,7 @@ export function BasicCar({position}) {
             <BasicCarSprite />
             <Collider types={["roadTurn", "stopTurn", "decelerate", "accelerate"]} />
             {/* <Interactable /> */}
-            <BasicCarScript />
+            <BasicCarScript directions={directions} />
         </GameObject>
     );
 }

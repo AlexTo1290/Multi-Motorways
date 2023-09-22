@@ -1,7 +1,7 @@
 import RoadTile from "./roadTiles";
 import GroundMesh from './groundMesh';
 import { Canvas } from '@react-three/fiber';
-import { Suspense, useState } from 'react';
+import { Suspense, useRef, useState } from 'react';
 import HitBoxGrid from "./HitBoxGrid";
 
 import { useRecoilValue } from "recoil";
@@ -25,7 +25,9 @@ const SceneCanvas = () => {
             setShiftPressed(!shiftPressed);
         }
     })
-    
+
+    const car = useRef(<BasicCar position={[-1.75, 1.75, 0.3]} />)
+
 
     return (
         <Canvas className="mainCanvas" camera={{ position: cameraPos, fov: 20, up: new Vector3(0,0,1)}}>
@@ -41,14 +43,16 @@ const SceneCanvas = () => {
 
             {/* Adding ground and road placment */}
             <GroundMesh />
-            <HitBoxGrid />
+            <HitBoxGrid showHitbox={shiftPressed}/>
 
             {/* Creating camera controls */}
             <OrbitControls mouseButtons={{ LEFT: MOUSE.PAN, RIGHT: MOUSE.ROTATE }} enablePan={!shiftPressed} enableRotate={!shiftPressed} zoomSpeed={4} maxPolarAngle={4*Math.PI/9} maxDistance={50} minDistance={10}/>
 
-            <BasicCar position={[-1.75, 1.75, 0.3]} />
+            {car.current}
 
-            {/* <primitive object={new AxesHelper(10)} /> */}
+            <primitive object={new AxesHelper(10)} />
+
+            <House position={[1.5, 1.5, 0]} />
         </Canvas>
     );
 }
