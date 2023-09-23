@@ -18,7 +18,6 @@ export default function RoadPieceHandler({ position }) {
 
         let straightRoads = "";
         let diagonalRoads = "";
-        let formattedPosition = [translateGridX+(position[0]*CELL_WIDTH), translateGridY+(position[1]*CELL_HEIGHT), 0.05]
 
         for (let i = 0; i < road.length; i+=2) {
             straightRoads += road.charAt(i);
@@ -34,38 +33,38 @@ export default function RoadPieceHandler({ position }) {
             case "0010":
             case "1010":
             case "0000":
-                return <VerticalRoad position={formattedPosition} />
+                return <VerticalRoad position={position} />
         
             case "0100":
             case "0001":
             case "0101":
-                return <HorizontalRoad position={formattedPosition} />
+                return <HorizontalRoad position={position} />
             
             // Corner road piece
             case "1100":
-                return <CornerJunction position={formattedPosition} />
+                return <CornerJunction position={position} />
 
             case "0110":
-                return <CornerJunction rotation={(Math.PI * 3) / 2} position={formattedPosition} />
+                return <CornerJunction rotation={(Math.PI * 3) / 2} position={position} />
 
             case "0011":
-                return <CornerJunction rotation={Math.PI} position={formattedPosition} />
+                return <CornerJunction rotation={Math.PI} position={position} />
 
             case "1001":
-                return <CornerJunction rotation={Math.PI / 2} position={formattedPosition} />
+                return <CornerJunction rotation={Math.PI / 2} position={position} />
             
             // T-Junctions
             case "1011":
-                return <TJunction position={formattedPosition} />
+                return <TJunction position={position} />
             
             case "0111":
-                return <TJunction rotation={Math.PI / 2} position={formattedPosition}  />
+                return <TJunction rotation={Math.PI / 2} position={position}  />
 
             case "1110":
-                return <TJunction rotation={Math.PI} position={formattedPosition} />
+                return <TJunction rotation={Math.PI} position={position} />
             
             case "1101":
-                return <TJunction rotation={(3 * Math.PI) / 2} position={formattedPosition} />
+                return <TJunction rotation={(3 * Math.PI) / 2} position={position} />
         }
 
         return;

@@ -281,7 +281,7 @@ function TJunctionController({position, rotation}) {
 
     const updateGroup = useCallback((values) => { 
         group.parent = null
-        console.log("uppy")
+        
         if (values) {
             group.current = values;
             let meshes = group.current?.getObjectByName("junctionController")?.children;

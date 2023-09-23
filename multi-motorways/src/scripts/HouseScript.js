@@ -4,13 +4,15 @@ import { BasicCar } from "../entities/CarEntities";
 
 function HouseScript({position}) {
     const state = useGameObject();  // getting subscribed-to game object state
-    const [cars, setCars] = useState([]);
+    
+    const [cars, setCars] = useState({});
     const nextKey = useRef(0);
 
+
     const addCar = () => {
-        let newCars = [...cars, <BasicCar key={nextKey.current} position={[position[0], position[1] - 0.77, 0.3]} directions={["left", "left", "right", "left", "left", "left"]} />];
+        let newCars = {... cars}
+        newCars[nextKey.current] = <BasicCar key={nextKey.current} listId={nextKey.current} position={[position[0], position[1] - 0.77, 0.3]} directions={["left", "left", "right", "right", "left"]} removeFromCanvasCallback={setCars} />;
         setCars(newCars)
-        console.log(position)
         nextKey.current += 1;
     }
     
@@ -21,9 +23,9 @@ function HouseScript({position}) {
     
       return () => clearTimeout(timer)
       });
-
+    //   console.log(cars)
     return (
-        cars
+        Object.values(cars)
     )
 }
 

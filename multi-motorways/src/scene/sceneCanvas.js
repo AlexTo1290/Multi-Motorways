@@ -37,8 +37,8 @@ const SceneCanvas = () => {
             </Suspense>
             
             {/* Adding lighting */}
-            <ambientLight intensity={1} />
-            <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
+            <ambientLight intensity={0.9} />
+            <spotLight position={[10, 10, 10]} angle={0.15} penumbra={0.3} />
             <pointLight position={[-10, -10, -10]} />
 
             {/* Adding ground and road placment */}
@@ -48,7 +48,7 @@ const SceneCanvas = () => {
             {/* Creating camera controls */}
             <OrbitControls mouseButtons={{ LEFT: MOUSE.PAN, RIGHT: MOUSE.ROTATE }} enablePan={!shiftPressed} enableRotate={!shiftPressed} zoomSpeed={4} maxPolarAngle={4*Math.PI/9} maxDistance={50} minDistance={10}/>
 
-            {car.current}
+            {/* {car.current} */}
 
             <primitive object={new AxesHelper(10)} />
 

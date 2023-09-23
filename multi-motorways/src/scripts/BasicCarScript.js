@@ -6,14 +6,13 @@ import calculateNextPosition from "../components/utils/calculateNextPosition";
 import { useRef, useState } from "react";
 
 
-function BasicCarScript({directions=["left", "left", "right", "left", "left", "right", "left", "left", "right"]}) {
+function BasicCarScript({directions=["left", "left", "right", "left", "left", "right", "left", "left", "right"], listId, removeFromCanvasCallback}) {
     const state = useGameObject();  // getting subscribed-to game object state
-    
     // Storing moving settings for the car
     const movementSettings = useRef({
         maxSpeed: 0.015,
         acceleration: 0.0002,
-        deceleration: -0.01 
+        deceleration: -0.001
     })
 
     // Storing current unique car properties (speed and acceleration)
@@ -32,13 +31,25 @@ function BasicCarScript({directions=["left", "left", "right", "left", "left", "r
             return;
         }
 
+        // checking if the object has finished moving
+        if (turnQueue.current.length === 0) {
+            removeFromCanvasCallback(previousState => {
+                let newState = {... previousState}
+                delete newState[listId]
+                console.log(newState)
+                console.log(listId)
+
+                return newState;
+            });
+            return
+        }
+
+        // console.log(turnQueue.current);
+        
         let newState = structuredClone(state)  // gets a copy of the game state
 
         // Checking for collisions
         let collisions = snapshot.getLoadable(gameObjectCollisionRegistry(state.id)).getValue();
-        // console.log(collisions)
-        
-        // console.log(turnQueue)
 
         for (let i = 0; i < collisions.length; i++) {
             // checking if coliding with car-turner object
@@ -50,9 +61,6 @@ function BasicCarScript({directions=["left", "left", "right", "left", "left", "r
                             newState.props.rotationPerFrame = -0.03;
                             movementRef.current.directionAfterTurn = collisions[i].props.directionAfterTurn;
                             movementRef.current.isTurning = true;
-
-                            // dequeuing turn from turnQueue
-                            turnQueue.current.shift();
 
                             // adding turn number (if exists - this is to prevent car from hitting the wrong turn stopper)
                             if (collisions[i].props?.turnNumber) {
@@ -67,9 +75,6 @@ function BasicCarScript({directions=["left", "left", "right", "left", "left", "r
                             newState.props.rotationPerFrame = 0.03;
                             movementRef.current.directionAfterTurn = collisions[i].props.directionAfterTurn;
                             movementRef.current.isTurning = true;
-
-                            // dequeuing turn from turnQueue
-                            turnQueue.current.shift();
                             
                             // adding turn number (if exists - this is to prevent car from hitting the wrong turn stopper)
                             if (collisions[i].props?.turnNumber) {
@@ -84,6 +89,8 @@ function BasicCarScript({directions=["left", "left", "right", "left", "left", "r
                 if (collisions[i].name !== movementRef.current.directionAfterTurn) {
                     continue;
                 }
+
+                if (!movementRef.current.isTurning) continue;
 
                 // if turnNumber in use, checking if colliding junction is the correct turnNumber
                 if (movementRef.current.turnNumber !== -1) {
@@ -101,33 +108,45 @@ function BasicCarScript({directions=["left", "left", "right", "left", "left", "r
 
                 // stopping the turn
                 newState.props.rotationPerFrame = 0;
+
+                
                 
                 switch(collisions[i].name) {
                     case "right":
                         newState.rotation = 0;
                         movementRef.current.isTurning = false;
+                        // dequeuing turn from turnQueue
+                        turnQueue.current.shift();
+                        console.log(turnQueue.current)
                         break;
                     case "up":
                         newState.rotation = Math.PI / 2;
                         movementRef.current.isTurning = false;
+                        // dequeuing turn from turnQueue
+                        turnQueue.current.shift();
+                        console.log(turnQueue.current)
                         break;
                     case "left":
                         newState.rotation = Math.PI;
                         movementRef.current.isTurning = false;
+                        // dequeuing turn from turnQueue
+                        turnQueue.current.shift();
+                        console.log(turnQueue.current)
                         break;
                     case "down":
                         newState.rotation = (3 * Math.PI) / 2;
                         movementRef.current.isTurning = false;
+                        // dequeuing turn from turnQueue
+                        turnQueue.current.shift();
+                        console.log(turnQueue.current)
 
                 }
             }
 
             // checking if colliding with decelerator
             else if (collisions[i].type === "decelerate") {
-                console.log("kkak")
-                if (collisions[i].name === turnQueue.current[0]) {
+                if (collisions[i].name === turnQueue.current[0] && !movementRef.current.isTurning) {
                     movementRef.current.acceleration = movementSettings.current.deceleration;
-                    console.log("decelerate")
                 }
             }
 
@@ -157,7 +176,6 @@ function BasicCarScript({directions=["left", "left", "right", "left", "left", "r
             
             if (movementRef.current.speed < 0) {
                 movementRef.current.speed = 0;
-                console.log(movementRef.current.speed)
             }
         }
 

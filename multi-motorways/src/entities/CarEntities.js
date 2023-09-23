@@ -24,7 +24,7 @@ export function CirclingCar({position}) {
     );
 }
 
-export function BasicCar({position, directions}) {
+export function BasicCar({position, directions, listId, removeFromCanvasCallback}) {
     /* 
     <Sprite />
     <Collider />
@@ -37,7 +37,7 @@ export function BasicCar({position, directions}) {
             <BasicCarSprite />
             <Collider types={["roadTurn", "stopTurn", "decelerate", "accelerate"]} />
             {/* <Interactable /> */}
-            <BasicCarScript directions={directions} />
+            <BasicCarScript listId={listId} removeFromCanvasCallback={removeFromCanvasCallback} directions={directions} />
         </GameObject>
     );
 }
