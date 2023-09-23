@@ -15,7 +15,7 @@ function StraightRoadSprite({position, rotation}) {
     
     return (<>
             <mesh position={(state?.position) ? state.position : position} rotation-z={rotation} ref={mesh} name={state?.name} scale={4}>
-                <boxGeometry args={[0.25, 0.25, 0.02]} />
+                <boxGeometry args={[0.25, 0.25, 0.04]} />
                 <meshBasicMaterial attach="material-0" color="#353535" />
                 <meshBasicMaterial attach="material-1" color="#353535" />
                 <meshBasicMaterial attach="material-2" color="#353535" />

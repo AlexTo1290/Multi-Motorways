@@ -7,14 +7,6 @@ import { useFrame } from "@react-three/fiber";
 
 
 const HitBoxGrid = ({showHitbox}) => {
-    const translateGridX = -24.5
-    const translateGridY = -24.5
-    const CELL_HEIGHT = 1
-    const CELL_WIDTH = 1
-
-    const GRID_WIDTH = 50
-    const GRID_HEIGHT = 50
-
     const [roadTilesArr, setRoadTilesArr] = useRecoilState(roadTiles)
     const [roadTilesJunctionsArr, setRoadTilesJunctionsArr] = useRecoilState(roadTilesJunctions);
     const [graphRoadsArr, setGraphRoadsArr] = useRecoilState(graphRoads)
@@ -69,9 +61,7 @@ const HitBoxGrid = ({showHitbox}) => {
     });
 
     useEffect(() => {
-        console.log(roadTilesArr)
         let copy = []
-        console.log(roadEntities)
         for (let i = 0; i < roadTilesArr.length; i++) {
             let road = roadTilesArr[i]
             const x = road[0]
@@ -134,7 +124,6 @@ const HitBoxGrid = ({showHitbox}) => {
         for (let i = 0; i < nodeEdgeGenerator[0].length; i++) {
 
             let junctionCode = nodeEdgeGenerator[0][i][2]
-            //console.log(junctionCode)
 
             let item = nodeEdgeGenerator[0][i]
 
