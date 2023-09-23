@@ -12,7 +12,7 @@ function BasicCarScript({directions=["left", "left", "right", "left", "left", "r
     const movementSettings = useRef({
         maxSpeed: 0.015,
         acceleration: 0.0002,
-        deceleration: -0.001
+        deceleration: -0.0002
     })
 
     // Storing current unique car properties (speed and acceleration)

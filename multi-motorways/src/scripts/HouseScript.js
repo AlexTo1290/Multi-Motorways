@@ -11,7 +11,7 @@ function HouseScript({position}) {
 
     const addCar = () => {
         let newCars = {... cars}
-        newCars[nextKey.current] = <BasicCar key={nextKey.current} listId={nextKey.current} position={[position[0], position[1] - 0.77, 0.3]} directions={["left", "left", "right", "right", "left"]} removeFromCanvasCallback={setCars} />;
+        newCars[nextKey.current] = <BasicCar key={nextKey.current} listId={nextKey.current} position={[position[0], position[1] - 0.77, 0.2]} directions={["left", "left", "right", "left", "left"]} removeFromCanvasCallback={setCars} />;
         setCars(newCars)
         nextKey.current += 1;
     }
@@ -19,7 +19,7 @@ function HouseScript({position}) {
     useEffect(() => {
         let timer = setTimeout(() => {
         addCar()
-      }, 5000);
+      }, 10000);
     
       return () => clearTimeout(timer)
       });

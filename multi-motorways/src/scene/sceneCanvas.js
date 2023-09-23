@@ -14,6 +14,7 @@ import { House } from "../entities/HouseEntities";
 // import { useFrame } from "@react-three/fiber";
 import { MOUSE, AxesHelper, Vector3 } from 'three'
 import TexturePreloader from "./TexturePreloader";
+import HousePlacement from "./HousePlacement";
 const SceneCanvas = () => {
 
     const cameraPos = useRecoilValue(cameraPosition);
@@ -52,7 +53,9 @@ const SceneCanvas = () => {
 
             <primitive object={new AxesHelper(10)} />
 
-            <House position={[1.5, 1.5, 0]} />
+            <HousePlacement />
+            {/* <House position={[0, 0, 0]} /> */}
+            
         </Canvas>
     );
 }

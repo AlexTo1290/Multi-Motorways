@@ -26,7 +26,7 @@ export function House({ position }) {
     return(
             <GameObject name="house" position={position} >
                 <HouseSprite />
-                <Collider types={["car"]} />
+                {/* <Collider types={["car"]} /> */}
                 {/* <Interactable /> */}
                 <HouseScript position={position} />
             </GameObject>
