@@ -13,3 +13,7 @@ export function useGameObject() {
     
     return context;
 }
+
+// use frame in sprite component to directly modify mesh's x, y, z positions.
+// use frame only runs when global state "moving" is true
+// "moving" is set by script component, as well as rotationPerFrame and etc

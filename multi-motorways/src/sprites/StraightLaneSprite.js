@@ -12,7 +12,7 @@ function StraightLaneSprite({ colour, length=0.25 }) {
 
     return (<mesh position={(state?.position) ? state.position : [0, 0, -100]} rotation-z={state?.rotation} ref={mesh} name={state?.name}>
             <boxGeometry args={[length, 0.01, 0.05]} />
-            <meshStandardMaterial color={colour} transparent opacity={0} />
+            <meshStandardMaterial color={colour} />
         </mesh>)
 };
 

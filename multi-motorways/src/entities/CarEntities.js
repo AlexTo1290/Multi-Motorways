@@ -33,8 +33,13 @@ export function BasicCar({position, directions, listId, removeFromCanvasCallback
     */
 
     return (
-        <GameObject name={"basic-car"} rotation={0} position={position} type="car" isVisible={true} props={{rotationPerFrame: 0}}>
-            <BasicCarSprite />
+        <GameObject name={"basic-car"} rotation={0} position={position} type="car" isVisible={true} 
+            props={{movementSettings: {maxSpeed: 0.015, acceleration: 0.0002, deceleration: -0.0002}, 
+                movement: {speed: 0, acceleration: 0.0002, rotationPerFrame: 0}
+            }}>
+
+
+            <BasicCarSprite position={position} />
             <Collider types={["roadTurn", "stopTurn", "decelerate", "accelerate"]} />
             {/* <Interactable /> */}
             <BasicCarScript listId={listId} removeFromCanvasCallback={removeFromCanvasCallback} directions={directions} />

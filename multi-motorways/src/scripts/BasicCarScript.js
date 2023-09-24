@@ -1,13 +1,16 @@
-import { useRecoilCallback } from "recoil";
+import { useRecoilCallback, useRecoilValue } from "recoil";
 import { useGameObject } from "../components/useGameObject";
 import { gameObjectCollisionRegistry, gameObjectRegistry } from "../recoil/atom/gameObjectRegistry";
 import { useFrame } from '@react-three/fiber'
 import calculateNextPosition from "../components/utils/calculateNextPosition";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 
 function BasicCarScript({directions=["left", "left", "right", "left", "left", "right", "left", "left", "right"], listId, removeFromCanvasCallback}) {
     const state = useGameObject();  // getting subscribed-to game object state
+
+    const collisions = useRecoilValue(gameObjectCollisionRegistry(state?.id));
+
     // Storing moving settings for the car
     const movementSettings = useRef({
         maxSpeed: 0.015,
@@ -20,7 +23,9 @@ function BasicCarScript({directions=["left", "left", "right", "left", "left", "r
         speed: 0,
         acceleration: 0.0002,
         isTurning: false,
-        turnNumber: -1
+        turnNumber: -1,
+        rotationPerFrame: 0,
+        directionAfterTurn: ""
     })
 
     const turnQueue = useRef(directions)
@@ -46,6 +51,44 @@ function BasicCarScript({directions=["left", "left", "right", "left", "left", "r
 
         // console.log(turnQueue.current);
         
+        // let newState = structuredClone(state)  // gets a copy of the game state
+
+        // updating rotation by rotation per frame
+        // if (movementRef.current.acceleration > 0) {
+        //     newState.rotation += (movementRef.current.speed / movementSettings.current.maxSpeed) * newState.props.rotationPerFrame;
+        // }
+
+        // updating car position
+        // let newPosition = [...calculateNextPosition(newState.position[0], newState.position[1], newState.rotation, movementRef.current.speed), newState.position[2]]
+        // newState.position = newPosition;
+
+        // reset(gameObjectRegistry(state.id))
+        // set(gameObjectRegistry(state.id), newState)  // setting the new game state in the game object directory
+        
+
+        // increasing speed of car by the acceleration value
+        // if (movementRef.current.speed < movementSettings.current.maxSpeed || (movementRef.current.acceleration < 0 && movementRef.current.speed > 0)) {
+        //     movementRef.current.speed += movementRef.current.acceleration;
+            
+        //     if (movementRef.current.speed < 0) {
+        //         movementRef.current.speed = 0;
+        //     }
+        // }
+
+    }, []);
+
+    useFrame(() => {
+        if (state) {
+            updatePosition(state)
+        };
+    })
+
+
+    const collisionsUpdate = useRecoilCallback(({set, snapshot}) => (state) => {
+        if (!state) {
+            return
+        }
+
         let newState = structuredClone(state)  // gets a copy of the game state
 
         // Checking for collisions
@@ -58,7 +101,13 @@ function BasicCarScript({directions=["left", "left", "right", "left", "left", "r
                     case "right":
                         // Checking if the next queued turn is "right"
                         if (turnQueue.current[0] === "right") {
-                            newState.props.rotationPerFrame = -0.03;
+                            if (collisions[i].props?.directionOnApproach) {
+                                if (collisions[i].props?.directionOnApproach !== newState.rotation) {
+                                    continue;
+                                }
+                            }
+
+                            movementRef.current.rotationPerFrame = -0.03;
                             movementRef.current.directionAfterTurn = collisions[i].props.directionAfterTurn;
                             movementRef.current.isTurning = true;
 
@@ -72,7 +121,7 @@ function BasicCarScript({directions=["left", "left", "right", "left", "left", "r
                     case "left":
                         // Checking if the next queued turn is "left"
                         if (turnQueue.current[0] === "left") {
-                            newState.props.rotationPerFrame = 0.03;
+                            movementRef.current.rotationPerFrame = 0.03;
                             movementRef.current.directionAfterTurn = collisions[i].props.directionAfterTurn;
                             movementRef.current.isTurning = true;
                             
@@ -107,10 +156,9 @@ function BasicCarScript({directions=["left", "left", "right", "left", "left", "r
                 }
 
                 // stopping the turn
-                newState.props.rotationPerFrame = 0;
+                movementRef.current.rotationPerFrame = 0;
+                movementRef.current.rotationPerFrame = 0;
 
-                
-                
                 switch(collisions[i].name) {
                     case "right":
                         newState.rotation = 0;
@@ -157,35 +205,16 @@ function BasicCarScript({directions=["left", "left", "right", "left", "left", "r
                 }
             }
         }
+
+        newState.props.movement = {... movementRef.current};
+        newState.props.movementSettings = {... movementSettings.current};
         
-        // updating rotation by rotation per frame
-        if (movementRef.current.acceleration > 0) {
-            newState.rotation += (movementRef.current.speed / movementSettings.current.maxSpeed) * newState.props.rotationPerFrame;
-        }
-
-        // updating car position
-        let newPosition = [...calculateNextPosition(newState.position[0], newState.position[1], newState.rotation, movementRef.current.speed), newState.position[2]]
-        newState.position = newPosition;
-
-        // reset(gameObjectRegistry(state.id))
         set(gameObjectRegistry(state.id), newState)  // setting the new game state in the game object directory
+    }, [])
 
-        // increasing speed of car by the acceleration value
-        if (movementRef.current.speed < movementSettings.current.maxSpeed || (movementRef.current.acceleration < 0 && movementRef.current.speed > 0)) {
-            movementRef.current.speed += movementRef.current.acceleration;
-            
-            if (movementRef.current.speed < 0) {
-                movementRef.current.speed = 0;
-            }
-        }
-
-    }, []);
-
-    useFrame(() => {
-        if (state) {
-            updatePosition(state)
-        };
-    })
+    useEffect(() => {
+        collisionsUpdate(state);
+    }, [collisions])
 }
 
 export default BasicCarScript;

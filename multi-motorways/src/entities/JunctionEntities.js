@@ -70,7 +70,7 @@ export function HorizontalRoad({ position }) {
 export function CornerJunction({ position, rotation = 0 }) {
     // Variables for making game object turn left or right
     let rightTurn = [0.08, 0.00, 0.02];     // the horizontal lane
-    let leftTurn = [-0.13, 0.08, 0.02];
+    let leftTurn = [-0.15, 0.08, 0.02];
 
     // Variables for leaving the junction
     let finalDirectionOutsidePosition = [-0.13, -0.1, 0.02];     // outside lane
@@ -176,11 +176,11 @@ export function TJunction({ position, rotation = 0 }) {
                     <StraightLaneSprite colour={"lime"} length={0.05} />
                 </GameObject>
 
-                <GameObject name={"right"} position={minorRightTurn} type="roadTurn" props={{directionAfterTurn: finalMinorRightTurnDirection}}>
+                <GameObject name={"right"} position={minorRightTurn} type="roadTurn" props={{directionAfterTurn: finalMinorRightTurnDirection, directionOnApproach: ((Math.PI/2) + rotation) % (2 * Math.PI)}}>
                     <StraightLaneSprite colour={"lightblue"} length={0.05} />
                 </GameObject>
 
-                <GameObject name={"right"} position={majorOuterRightTurn} rotation={Math.PI / 2} type="roadTurn" props={{directionAfterTurn: finalMajorRightTurnDirection, turnNumber: 1}}>
+                <GameObject name={"right"} position={majorOuterRightTurn} rotation={Math.PI / 2} type="roadTurn" props={{directionAfterTurn: finalMajorRightTurnDirection, turnNumber: 1, directionOnApproach: (Math.PI + rotation) % (2 * Math.PI)}}>
                     <StraightLaneSprite colour={"violet"} length={0.05} />
                 </GameObject>
                 

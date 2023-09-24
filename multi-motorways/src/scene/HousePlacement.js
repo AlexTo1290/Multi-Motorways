@@ -7,6 +7,7 @@ function HousePlacement() {
 
     useEffect(() => {
         let housePositions = [[-1, 1, 0], [1, 1, 0], [3, 1, 0]];
+
         let houseObjects = [];
         let key = 0;
 

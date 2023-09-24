@@ -22,7 +22,6 @@ function Collider({ types=["all"] }) {
                 collisions.push(gameObjects[i]);
             }
         }
-        // console.log(collisions)
 
         if (JSON.stringify(snapshot.getLoadable(gameObjectCollisionRegistry(state.id)).getValue()) != JSON.stringify(collisions)) {
             // updating the game object's collisions in the gameObjectCollisionsRegistry atom family
@@ -44,16 +43,13 @@ function Collider({ types=["all"] }) {
         }
     })
 
+   
     useEffect(() => {
-        updateCollisions();
-    })
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
+        const timer = setInterval(() => {
             updateCollisions();
-        }, 200);
-        return () => clearTimeout(timer);
-      }, []);
+        }, 10);
+        return () => clearInterval(timer);
+      });
 
 }
 
