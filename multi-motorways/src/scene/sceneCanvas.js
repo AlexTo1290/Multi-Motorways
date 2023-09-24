@@ -31,7 +31,7 @@ const SceneCanvas = () => {
 
 
     return (
-        <Canvas className="mainCanvas" camera={{ position: cameraPos, fov: 20, up: new Vector3(0,0,1)}}>
+        <Canvas className="mainCanvas" camera={{ position: new Vector3(5,-15,15), fov: 20, up: new Vector3(0,0,1)}}>
             {/* Preloading textures */}
             <Suspense fallback={null}>
                 <TexturePreloader />
