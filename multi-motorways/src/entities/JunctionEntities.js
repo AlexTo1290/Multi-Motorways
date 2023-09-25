@@ -98,20 +98,20 @@ export function CornerJunction({ position, rotation = 0 }) {
                 <CornerJunctionSprite position={position} rotation={rotation} />
 
                 <GameObject name={"right"} position={rightTurn} type="roadTurn" hitbox={[0.03, 0.25, 0.1]} props={{directionAfterTurn: finalDirectionOutside}}>
-                    <StraightLaneSprite colour={"lightblue"} length={0.05} />
+                    <StraightLaneSprite colour={"lightblue"} length={0.1} />
                 </GameObject>
                 
                 <GameObject name={"left"} position={leftTurn} rotation={Math.PI / 2} type="roadTurn" hitbox={[0.03, 0.25, 0.1]} props={{directionAfterTurn: finalDirectionInside}}>
-                    <StraightLaneSprite colour={"lightpink"} length={0.05}/>
+                    <StraightLaneSprite colour={"lightpink"} length={0.1}/>
                 </GameObject>
  
 
                 <GameObject name={finalDirectionOutside} rotation={Math.PI / 2} position={finalDirectionOutsidePosition} type="stopTurn">
-                    <StraightLaneSprite colour={"lightblue"} length={0.05}/>
+                    <StraightLaneSprite colour={"lightblue"} length={0.1}/>
                 </GameObject>
 
                 <GameObject name={finalDirectionInside} position={finalDirectionInsidePosition} type="stopTurn">
-                    <StraightLaneSprite colour={"lightpink"} length={0.05} />
+                    <StraightLaneSprite colour={"lightpink"} length={0.1} />
                 </GameObject>
 
             </GameObject>

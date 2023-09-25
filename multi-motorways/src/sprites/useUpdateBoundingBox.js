@@ -35,9 +35,20 @@ function useUpdateBoundingBox({ id, mesh }) {
                 idRef.current = id
                 updateBoundingBoxAtom()
             }
-        }, 10);
+        }, 1);
         return () => clearInterval(timer);
     })
+
+    // useFrame(() => {
+    //     if (boundingBoxCalculated) updateBoundingBoxAtom();
+
+    //     else if (!boundingBoxCalculated && mesh!==null) {
+    //         mesh.geometry.computeBoundingBox();
+    //         setBoundingBoxCalculated(true);
+    //         idRef.current = id
+    //         updateBoundingBoxAtom()
+    //     }
+    // })
     
     const unmount = useRecoilCallback(({set}) => () => {
         set(gameObjectBoundingBoxes(idRef.current), null);

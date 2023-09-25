@@ -23,10 +23,14 @@ function BasicCarSprite({position}) {
         const interval = setInterval(() => {
             setMeshState(null);
             setMeshState(mesh.current)
-        }, 10);
+        }, 1);
         return () => clearInterval(interval);
       }, []);
 
+    // useFrame(() => {
+    //     setMeshState(null);
+    //     setMeshState(mesh.current)
+    // })
     
 
     useFrame(() => {

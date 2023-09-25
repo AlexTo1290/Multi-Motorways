@@ -3,6 +3,7 @@ import { gameObjectsByTypesSelector } from "../recoil/selector/gameObjectsByType
 import { useRecoilCallback, useRecoilValue } from "recoil";
 import { useEffect } from "react";
 import { gameObjectBoundingBoxes, gameObjectCollisionRegistry, gameObjectRegistry } from "../recoil/atom/gameObjectRegistry";
+import { useFrame } from "@react-three/fiber";
 
 function Collider({ types=["all"] }) {
     // Getting game object's state
@@ -43,11 +44,14 @@ function Collider({ types=["all"] }) {
         }
     })
 
-   
+    // useFrame(() => {
+    //     updateCollisions();
+    // })
+
     useEffect(() => {
         const timer = setInterval(() => {
             updateCollisions();
-        }, 10);
+        }, 1);
         return () => clearInterval(timer);
       });
 
